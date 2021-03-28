@@ -7,7 +7,7 @@ from .forms import SignUpForm
 # Create your views here.
 
 
-def login(request):
+def userLog(request):
     return render(request, 'login.html')
 
 def register(request):
@@ -16,7 +16,7 @@ def register(request):
 def messaging(request):
     return render(request, 'messaging.html')
 
-def home_view(request):
+def home(request):
     return render(request, 'LandingPage.html')
 
 def signup_view(request):
@@ -26,7 +26,7 @@ def signup_view(request):
         username = form.cleaned_data.get('username')
         password = form.cleaned_data.get('password1')
         user = authenticate(username=username, password=password)
-        login(request, user)
+        #userLog(request, user)
         return redirect('LandingPage')
     else:
         form = SignUpForm()
