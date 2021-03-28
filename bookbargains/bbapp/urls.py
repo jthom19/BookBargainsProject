@@ -2,9 +2,9 @@ from django.urls import path
 from bbapp import views
 
 urlpatterns = [
-    path('login', views.login, name='login'),
+    path('login', views.userLog, name='login'),
     path('register', views.register, name='register'),
-    path('messaging', views.messaging, name='messaging')
-    path('', home_view, name="home")
-    path('signup/', signup_view, name="signup")
+    path('messaging', views.messaging, name='messaging'),
+    path('', views.home, name="home"),
+    path('signup/', views.signup_view, name="signup")
 ]
