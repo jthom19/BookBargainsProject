@@ -19,6 +19,9 @@ def messaging(request):
 def home(request):
     return render(request, 'LandingPage.html')
 
+def hometemp(request):
+    return render(request, 'hometemp.html')
+
 def signup(request):
     form = UserCreationForm()
     if request.method == 'POST':
