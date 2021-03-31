@@ -38,15 +38,10 @@ def signup(request):
 def createprofile(request):
     p_form = CreateProfileForm()
     if request.method == "POST":
-        form = CreateProfileForm(request.POST)
-        if form.is_valid():
-            user = request.user
-            user.Profile.first_name = form.cleaned_data.get('first_name')
-            user.Profile.last_name = form.cleaned_data.get('last_name')
-            user.Profile.phone = form.cleaned_data.get('phone')
-            user.Profile.major = form.cleaned_data.get('major')
-            user.Profile.housing = form.cleaned_data.get('housing')
-            user.Profile.save()
+        p_form = CreateProfileForm(request.POST)
+        if p_form.is_valid():
+            Profile = p_form.save()
+            return redirect('../')
         else:
             form = CreateProfileForm()
     return render(request, 'createprofile.html', {'p_form':p_form})
