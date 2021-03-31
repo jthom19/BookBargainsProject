@@ -39,7 +39,7 @@ def signup(request):
     return render(request, 'register.html', {'form': form})
 
 def createprofile(request):
-    p_form = CreateProfileForm()
+    p_form = CreateProfileForm(initial={'user':request.user})
     if request.method == "POST":
         p_form = CreateProfileForm(request.POST)
         if p_form.is_valid():

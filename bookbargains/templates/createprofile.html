@@ -12,7 +12,7 @@
 
 <div class="container mt-5">
     <form method="post" class="w-75 m-auto">
-        {% csrf_token %}
+      {% csrf_token %}
         {% for field in p_form %}
           <p id="{{ field.name }}">
             {{ field.label_tag }}
@@ -25,7 +25,7 @@
             {% endfor %}
           </p>
         {% endfor %}
-        <button type="submit" onclick ref = 'land'>Update Profile</button>
+        <button type="submit">Update Profile</button>
       </form>
 </div>
 
