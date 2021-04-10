@@ -22,6 +22,9 @@ def home(request):
 def hometemp(request):
     return render(request, 'hometemp.html')
 
+def buyList(request):
+    return render(request, 'buyerListing.html')
+
 def signup(request):
     form = UserCreationForm()
     if request.method == 'POST':
