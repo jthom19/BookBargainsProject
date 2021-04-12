@@ -16,9 +16,6 @@ def register(request):
 def messaging(request):
     return render(request, 'messaging.html')
 
-def home(request):
-    return render(request, 'LandingPage.html')
-
 def hometemp(request):
     return render(request, 'hometemp.html')
 
