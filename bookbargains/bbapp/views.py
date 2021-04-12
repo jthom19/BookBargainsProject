@@ -49,7 +49,16 @@ def createprofile(request):
     if request.method == "POST":
         p_form = CreateProfileForm(request.POST)
         if p_form.is_valid():
+            Profile = p_form.save(commit=False)
+            Profile.user = request.user
             Profile = p_form.save()
+            User = request.user
+            User.save()
+            cleanfirstname = p_form.cleaned_data.get('first_name')
+            cleanlastname = p_form.cleaned_data.get('last_name')
+            User.first_name = cleanfirstname
+            User.last_name = cleanlastname
+            User.save()
             return redirect('../')
         else:
             form = CreateProfileForm()

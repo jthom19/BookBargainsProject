@@ -6,7 +6,6 @@ from .models import Profile
 
 
 class CreateUserForm(UserCreationForm):
-
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')
@@ -17,4 +16,4 @@ class CreateUserForm(UserCreationForm):
 class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = "__all__"
+        exclude = ('user',)
