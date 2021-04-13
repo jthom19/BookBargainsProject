@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .forms import CreateUserForm, CreateProfileForm
+from .forms import CreateUserForm, CreateProfileForm, ListBookForm
 # Create your views here.
 
 
@@ -60,3 +60,14 @@ def createprofile(request):
         else:
             form = CreateProfileForm()
     return render(request, 'createprofile.html', {'p_form':p_form})
+
+def createlisting(request):
+    newlistingform = ListBookForm(initial={'user':request.user})
+    if request.method == "POST":
+        newlistingform = ListBookForm(request.POST)
+        if newlistingform.is_valid():
+            newlistingform = newlistingform.save(commit=False)
+            newlistingform.user = request.user
+            newlistingform = newlistingform.save()
+        return redirect('../')
+    return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})

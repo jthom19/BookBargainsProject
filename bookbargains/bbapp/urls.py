@@ -8,6 +8,5 @@ urlpatterns = [
     path('profile/', views.createprofile, name="profile"),
     path('login', views.userLog, name="login"),
     path('land', views.hometemp, name="land"),
-    path('buylist', views.buyList, name="buyerlist"),
-    path('selllist', views.sellList, name="selllist")
+    path('selllist', views.createlisting, name="selllist")
 ]

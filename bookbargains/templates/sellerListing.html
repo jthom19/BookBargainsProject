@@ -9,7 +9,7 @@
             <img src="../static/bb.png" alt="..." class="img-thumbnail" width="200px" height="300px">
         </div>
         
-        < >
+        <>
         <br>
         <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">Upload Images</button>
         <br>
@@ -18,7 +18,7 @@
     <div class="container mt-5">
         <form method="post" class="w-75 m-auto">
             {% csrf_token %}
-            {% for field in form %}
+            {% for field in ListBookForm %}
               <p>
                 {{ field.label_tag }}
                 {{ field }}
@@ -30,7 +30,7 @@
                 {% endfor %}
               </p>
             {% endfor %}
-            <button type="submit">Sign Up</button>
+            <button type="submit">Create Listing</button>
           </form>
       </div>
 
