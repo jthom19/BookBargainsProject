@@ -58,7 +58,7 @@ class Book(models.Model):
         null=True)
     title = models.CharField(max_length=100, null=True)
     author = models.CharField(max_length=100, null=True)
-    isbn = models.CharField(max_length=13, null=True)
+    ISBN13 = models.CharField(max_length=13, null=True)
     edition = models.CharField(max_length=100, null=True)
     condition = models.CharField(
         max_length=2,

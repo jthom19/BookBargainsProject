@@ -22,8 +22,6 @@ def hometemp(request):
 def buyList(request):
     return render(request, 'buyerListing.html')
 
-def sellList(request):
-    return render(request, 'sellerListing.html')
 
 def signup(request):
     form = UserCreationForm()

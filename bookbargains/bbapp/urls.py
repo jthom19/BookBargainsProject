@@ -8,5 +8,5 @@ urlpatterns = [
     path('profile/', views.createprofile, name="profile"),
     path('login', views.userLog, name="login"),
     path('land', views.hometemp, name="land"),
-    path('selllist', views.createlisting, name="selllist")
+    path('listnew', views.createlisting, name="newlisting") #already linked to see new listing
 ]
