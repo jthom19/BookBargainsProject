@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-
+from .models import Book
 
 class CreateUserForm(UserCreationForm):
     class Meta:
@@ -16,4 +16,9 @@ class CreateUserForm(UserCreationForm):
 class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
+        exclude = ('user',)
+
+class ListBookForm(forms.ModelForm):
+    class Meta:
+        model = Book
         exclude = ('user',)
