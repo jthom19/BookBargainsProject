@@ -7,7 +7,7 @@
   </div>
 
 
-<div class="container mt-5">
+<div class="container mt-4">
     <form method="post" class="w-75 m-auto">
       {% csrf_token %}
         {% for field in p_form %}
@@ -22,7 +22,7 @@
             {% endfor %}
           </p>
         {% endfor %}
-        <button type="submit">Update Profile</button>
+        <div class="text-center mt-4"><button class="text-center" type="submit">Update Profile</button></div>
       </form>
 </div>
 
