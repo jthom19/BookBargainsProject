@@ -2,7 +2,7 @@
 {% load static %}
 {% block body_block %}
 <div class="container">
-<h3 class="text-left mt-4">Please fill out the following fields to list a book.</h1>
+<h3 class="text-left mt-4">Please fill out the following fields to list a book.</h3>
 <div class="row">
     <div class="col-2 text-center">
         <div class="thumbnails1 mt-5">
@@ -28,17 +28,16 @@
                 {% endfor %}
               </p>
             {% endfor %}
-
+          <button type="submit" class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">List</button>
           </form>
     </div>
     <div class="col-3">
         <div class="btn_group1 mt-5">
             <br>
-            <button type="submit" class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">List</button>
-            <br>
             <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #ebcea5;">Save as Draft</button>
         </div>
     </div>
+    </form>
 </div>
 </div>
 
