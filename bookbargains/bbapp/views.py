@@ -62,7 +62,7 @@ def createprofile(request):
 def createlisting(request):
     newlistingform = ListBookForm(initial={'user':request.user})
     if request.method == "POST":
-        newlistingform = ListBookForm(request.POST)
+        newlistingform = ListBookForm(request.POST, request.FILES)
         if newlistingform.is_valid():
             newlistingform = newlistingform.save(commit=False)
             newlistingform.user = request.user

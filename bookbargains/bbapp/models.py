@@ -51,6 +51,7 @@ class Book(models.Model):
     #need primary key
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=False)
+    image = models.ImageField(upload_to = 'images/', null=True, blank=False)
     selldonate = models.CharField(
         max_length=2,
         choices=SELL_DONATE_CHOICES,
@@ -69,7 +70,6 @@ class Book(models.Model):
         max_length=4, choices=FIELD_CHOICES, default='Select One',
         null=True)  #dropdown
     price = models.CharField(max_length=100, null=True)
-    #image = models.ImageField(upload_to='images/')
 
     def __str__(self):
         return self.title
