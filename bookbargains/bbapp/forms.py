@@ -13,6 +13,7 @@ class CreateUserForm(UserCreationForm):
             "username": "Email",
         }
 
+
 class CreateProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
@@ -29,3 +30,17 @@ class ListBookForm(forms.ModelForm):
     class Meta:
         model = Book
         exclude = ('user',)
+        widgets = {
+            'selldonate': forms.Select(attrs={'class':'form-control'}),
+            'title': forms.TextInput(attrs={'class':'form-control'}),
+            'author': forms.TextInput(attrs={'class':'form-control'}),
+            'ISBN13': forms.TextInput(attrs={'class':'form-control'}),
+            'edition': forms.TextInput(attrs={'class':'form-control'}),
+            'condition': forms.Select(attrs={'class':'form-control'}),
+            'field': forms.Select(attrs={'class':'form-control'}),
+            'price': forms.TextInput(attrs={'class':'form-control'}),
+        }
+        labels = {
+            'selldonate': "Selling or Donating?",
+        }
+
