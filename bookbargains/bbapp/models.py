@@ -69,6 +69,7 @@ class Book(models.Model):
         max_length=4, choices=FIELD_CHOICES, default='Select One',
         null=True)  #dropdown
     price = models.CharField(max_length=100, null=True)
+    #image = models.ImageField(upload_to='images/')
 
     def __str__(self):
         return self.title

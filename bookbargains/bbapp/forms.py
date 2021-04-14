@@ -38,9 +38,11 @@ class ListBookForm(forms.ModelForm):
             'edition': forms.TextInput(attrs={'class':'form-control'}),
             'condition': forms.Select(attrs={'class':'form-control'}),
             'field': forms.Select(attrs={'class':'form-control'}),
-            'price': forms.TextInput(attrs={'class':'form-control'}),
+            'price': forms.TextInput(attrs={'class':'form-control'})
+            
         }
         labels = {
             'selldonate': "Selling or Donating?",
         }
 
+#'image': forms.ImageField(required = False)
