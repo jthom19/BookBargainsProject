@@ -3,23 +3,26 @@
 {% block body_block %}
 <div class="container">
 <h3 class="text-left mt-4">Please fill out the following fields to list a book.</h3>
+<form method="post" enctype="multipart/form-data" class="w-100 m-auto">
 <div class="row">
-    <div class="col-2 text-center">
+    <div class="col-3 text-center mt-4">
         <div class="thumbnails1 mt-5">
             <img src="../static/bb.png" alt="..." class="img-thumbnail" width="200px" height="300px">
         </div>
         <br>
-        <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">Upload Images</button>
+        {{ ListBookForm.image.label_tag}}
+        {{ ListBookForm.image }}
         <br>
 
     </div>
-    <div class="col-7 container mt-5" style="margin-bottom: 100px;">
-        <form method="post" enctype="multipart/form-data" class="w-75 m-auto">
+    <div class="col-6 container mt-5" style="margin-bottom: 100px;">
             {% csrf_token %}
             {% for field in ListBookForm %}
               <p>
-                {{ field.label_tag }}
-                {{ field }}
+                {% if not forloop.first %}
+                  {{ field.label_tag }}
+                  {{ field }}
+                {% endif %}
                 {% if field.help_text %}
                   <small style="color: grey">{{ field.help_text }}</small>
                 {% endif %}
@@ -28,13 +31,12 @@
                 {% endfor %}
               </p>
             {% endfor %}
-          <button type="submit" class="btn mx-auto mt-3" style="color: #fff; background-color: #8a100b;">
-            <a href="land"</a>List</button>
-          <button class="btn mx-auto mt-3" style="color: #000000; background-color: #ebcea5;">Save as Draft</button>
-          </form>
     </div>
-    <div class="col-3">
-        <div class="btn_group1 mt-5">
+    <div class="col-3 mt-5">
+        <div class="btn_group1 mt-5 text-center">
+          <button type="submit" class="btn mx-auto mt-3" style="color: #fff; background-color: #8a100b;">List</button>
+          <br style="height: 10px;"></br>
+          <button class="btn mx-auto" style="color: #000000; background-color: #ebcea5;">Save as Draft</button>
         </div>
     </div>
     </form>
