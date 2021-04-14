@@ -23,6 +23,7 @@ def buyList(request):
     return render(request, 'buyerListing.html')
 
 
+
 def signup(request):
     form = UserCreationForm()
     if request.method == 'POST':
