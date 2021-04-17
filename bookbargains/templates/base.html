@@ -51,13 +51,19 @@
             </li>
             <li class="nav-item text-white dropdown">
                 <a class="nav-link text-white dropdown-toggle" href="#" id="profiledrop" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <i class="fa fa-user"></i>
+                  {% if user.is_authenticated %}
+                    Welcome {{ user.first_name }}!
+                  {% else %}
+                    <i class="fa fa-user"></i>
+                  {% endif %}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="profiledrop">
                   <a class="dropdown-item" href="#">ACCOUNT SETTINGS</a>
                   <a class="dropdown-item" href="messaging.html">MESSAGES</a>
                   <a class="dropdown-item" href="#">WISHLIST</a>
-                  <a class="dropdown-item" href="#">SIGN OUT</a>
+                  {% if user.is_authenticated %}
+                    <a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">SIGN OUT</a>
+                  {% endif %}
                 </div>
             </li>
           </ul>
