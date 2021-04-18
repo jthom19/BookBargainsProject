@@ -56,6 +56,7 @@ def createprofile(request):
             cleanlastname = p_form.cleaned_data.get('last_name')
             User.first_name = cleanfirstname
             User.last_name = cleanlastname
+            User.email = User.username
             User.save()
             return redirect('../')
         else:
