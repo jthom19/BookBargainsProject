@@ -21,6 +21,7 @@
     </div>
     <div class="col-12 col-lg-6 text-center" style="background-color: #ebcea5;">
       <h3 id="righttop">Welcome to the <strong>best</strong> university<br>book exchange community!</h3>
+      {% if user.is_authenticated %}<p style="height: 35px;"></p>{% endif %}
       <h4 class="my-0">Are you...</h4>
       <button class="btn mx-auto mt-3" style="color: #fff; background-color: #8a100b;">BUYING</button>
       <h6 class="mt-2 mb-0">Get books at discounted prices</h6>
@@ -30,15 +31,18 @@
       </button>
       <h6 class="mt-2 mb-0">Sell unwanted books with ease</h6>
       <br>
-
-      <span>
-        <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">
-          <a href = 'login' style="color: #ffffff">Log In</a>
-        </button>
-        <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">
-          <a href = 'signup' style="color: #ffffff">Create Account</a>
-        </button>
-      </span>
+      {% if user.is_authenticated %}
+        <p></p>
+      {% else %}
+        <span>
+          <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">
+            <a href = 'login' style="color: #ffffff">Log In</a>
+          </button>
+          <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">
+            <a href = 'signup' style="color: #ffffff">Create Account</a>
+          </button>
+        </span>
+      {% endif %}
     </div>
 </div>
 
