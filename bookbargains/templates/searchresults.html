@@ -3,13 +3,38 @@
 {% block body_block %}
 <h1>Search Results</h1>
 
-<ul>
+<form action="{% url 'searchresults' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+
 
   {% for Book in object_list %}
-    <li>
-      {{ Book.title }}, {{ Book.author }}
-    </li>
+      <pre class="tab">      </pre>
+      <table style="width:400px; height: 200px; border:1px solid black">
+          <tr>
+              <td colspan="2" style="text-align:center">{{Book.title}}</td>
+          </tr>
+          <tr>
+            <td>Author:</td>
+            <td>{{Book.author}}</td>
+          </tr>
+          <tr>
+              <td>ISBN:</td>
+              <td>{{Book.ISBN13}}</td>
+          </tr>
+          <tr>
+              <td>Edition:</td>
+              <td>{{Book.edition}}</td>
+          </tr>
+          <tr>
+              <td>Condition:</td>
+              <td>{{Book.condition}}</td>
+              </tr>
+      </table>
   {% endfor %}
-</ul>
+
+
+
 
 {% endblock %}
