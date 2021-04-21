@@ -4,6 +4,9 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm
+from django.views.generic import TemplateView, ListView
+from .models import Book
+from django.db.models import Q
 # Create your views here.
 
 
@@ -25,6 +28,22 @@ def buyList(request):
 def logoutuser(request):
     logout(request)
     return redirect('../')
+
+class HomePageView(ListView):
+    model = Book
+    template_name= 'search.html'
+
+class SearchResultsView(ListView):
+    model = Book
+    template_name = 'searchresults.html'
+    def get_queryset(self): # new
+        query = self.request.GET.get('q')
+        object_list = Book.objects.filter(
+            Q(title__icontains=query) | Q(author__icontains=query)
+        )
+        return object_list
+
+
 
 def signup(request):
     form = UserCreationForm()

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_block %}
+<h1>Search Results</h1>
+
+<form action="{% url 'searchresults' %}" method="get">
+  <input name="q" type="text" placeholder="Search...">
+</form>
+
+<ul>
+
+  {% for Book in object_list %}
+    <li>
+      {{ Book.title }}, {{ Book.author }}
+    </li>
+  {% endfor %}
+</ul>
+
+
+
+{% endblock %}
