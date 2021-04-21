@@ -49,8 +49,7 @@ SELL_DONATE_CHOICES = (('SO', 'Select One'), ('SE', 'Selling'), ('DO',
 
 class Book(models.Model):
     #need primary key
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, null=True, blank=False)
+    user = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, blank=False)
     image = models.ImageField(upload_to = 'images/', null=True, blank=False)
     selldonate = models.CharField(
         max_length=2,
