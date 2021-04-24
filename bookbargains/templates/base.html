@@ -28,10 +28,8 @@
                   BUYER SERVICES
                 </a>
                 <div class="dropdown-menu" aria-labelledby="buyerdropdown">
-                  <a class="dropdown-item" href="search">VIEW MARKETPLACE</a>
-                  <a class="dropdown-item" href="#">ADVANCED SEARCH</a>
-                  <a class="dropdown-item" href="#">WISHLIST</a>
-                  <a class="dropdown-item" href="">PURCHASE HISTORY</a>
+                  <a class="dropdown-item" href="search">View Current Books</a>
+                  <a class="dropdown-item" href="#">Wishlist</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -39,9 +37,8 @@
                   SELLER SERVICES
                 </a>
                 <div class="dropdown-menu" aria-labelledby="admindropdown">
-                  <a class="dropdown-item" href="#">VIEW CURRENT BOOKS</a>
-                  <a class="dropdown-item" href="#">COMPARE PRICES</a>
-                  <a class="dropdown-item" href="#">SALE HISTORY</a>
+                  <a class="dropdown-item" href="search">View Current Books</a>
+                  <a class="dropdown-item" href="listnew">List New Book</a>
                 </div>
             </li>
           </ul>
@@ -58,12 +55,14 @@
                   {% endif %}
                 </a>
                 <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="profiledrop">
-                  <a class="dropdown-item" href="#">ACCOUNT SETTINGS</a>
-                  <a class="dropdown-item" href="messaging.html">MESSAGES</a>
-                  <a class="dropdown-item" href="#">WISHLIST</a>
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">SIGN OUT</a>
-                  {% endif %}
+                  {% else %}
+                    <a class="dropdown-item" href="login">Log In</a>
+                    {% endif %}
+                  <a class="dropdown-item" href="#">Messages</a>
+                  <a class="dropdown-item" href="#">Wishlist</a>
+                  
                 </div>
             </li>
           </ul>
