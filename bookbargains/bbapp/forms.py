@@ -1,9 +1,9 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from .models import Profile
-from .models import Book
+from .models import Profile, Book, Message
 
 class UserLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
@@ -15,10 +15,7 @@ class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username', 'password1', 'password2')
-        labels = {
-            "username": "Email",
-        }
-
+        labels = {"username": "Email",}
 
 class CreateProfileForm(forms.ModelForm):
     class Meta:
@@ -47,8 +44,9 @@ class ListBookForm(forms.ModelForm):
             'price': forms.TextInput(attrs={'class':'form-control'})
             
         }
-        labels = {
-            'selldonate': "Selling or Donating?",
-        }
+        labels = {'selldonate': "Selling or Donating?",}
 
-#'image': forms.ImageField(required = False)
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ('recipient','sender','subject','message','unread')

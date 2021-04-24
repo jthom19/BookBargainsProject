@@ -16,5 +16,6 @@ urlpatterns = [
     path('search/', HomePageView.as_view(), name = "search"),
 
     path('logout/', views.logoutuser, name='logout'),
-    path('login/',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login')
+    path('login/',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login'),
+    path('messages/', views.createmessage, name='messages')
 ]

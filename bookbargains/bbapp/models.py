@@ -71,3 +71,15 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Message(models.Model):
+    recipient = models.ManyToManyField(User, related_name = 'user')
+    sender = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'sender')
+    subject = models.CharField(max_length = 1000, blank = True)
+    message = models.TextField()
+    sent = models.DateTimeField(auto_now_add = True)
+    unread = models.BooleanField(default = True)
+
+    def __str__(self):
+        return 'Message from ' + str(self.sender) + '.  Subject:' + str(self.subject)
