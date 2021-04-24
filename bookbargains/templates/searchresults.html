@@ -8,32 +8,20 @@
 </form>
 
 
+<!--  How to get image:  <img src="{{Book.image.url}}" alt="img" -->
 
   {% for Book in object_list %}
-      <pre class="tab">      </pre>
-      <table style="width:400px; height: 200px; border:1px solid black">
-          <tr>
-              <td colspan="2" style="text-align:center" >
-                <a style="color: #000000" href = 'buyList'>{{Book.title}}</a>
-              </td>
-          </tr>
-          <tr>
-            <td>Author:</td>
-            <td>{{Book.author}}</td>
-          </tr>
-          <tr>
-              <td>ISBN:</td>
-              <td>{{Book.ISBN13}}</td>
-          </tr>
-          <tr>
-              <td>Edition:</td>
-              <td>{{Book.edition}}</td>
-          </tr>
-          <tr>
-              <td>Condition:</td>
-              <td>{{Book.condition}}</td>
-              </tr>
-      </table>
+  <div class="card" style="width: 18rem;">
+    <img class=“w-100" style="height:180px;width:286px;" src="{{Book.image.url}}" alt="img" >
+    <div class="card-body">
+      <h5 class="card-title">{{Book.title}}</h5>
+      <p class="card-text">Field: {{Book.field}} </p>
+      <p class="card-text">Author: {{Book.author}} </p>
+      <p class="card-text">ISBN: {{Book.ISBN13}} </p>
+
+      <a href="messaging" class="btn btn-primary">Message seller</a>
+    </div>
+  </div>
   {% endfor %}
 
 
