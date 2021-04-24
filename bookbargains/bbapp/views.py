@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from .forms import CreateUserForm, CreateProfileForm, ListBookForm
+from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
 from django.views.generic import TemplateView, ListView
 from .models import Book
 from django.db.models import Q
@@ -92,3 +92,12 @@ def createlisting(request):
             newlistingform = newlistingform.save()
         return redirect('../')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
+
+def createmessage(request):
+    newmessageform = MessageForm()
+    if request.method == "POST":
+        newmessageform = MessageForm(request.POST)
+        if newmessageform.is_valid():
+            newmessageform = newmessageform.save()
+        return redirect('../')
+    return render(request, 'messages.html', {'MessageForm':MessageForm})
