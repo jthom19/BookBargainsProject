@@ -7,6 +7,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=False, on_delete=models.CASCADE) #User deleted? Delete profile
+    userid=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length = 100, null=True)
     phone = models.CharField(max_length = 10, null=True)
