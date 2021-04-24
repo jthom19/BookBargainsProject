@@ -9,12 +9,12 @@ urlpatterns = [
     path('messaging/', views.messaging, name='messaging'),
     path('signup/', views.signup, name="signup"),
     path('profile/', views.createprofile, name="profile"),
-    path('land', views.hometemp, name="land"),
-    path('listnew', views.createlisting, name="newlisting"), #already linked to see new listing
-    path('buyList', views.buyList, name="buyList"),
+    path('land/', views.hometemp, name="land"),
+    path('listnew/', views.createlisting, name="newlisting"), #already linked to see new listing
+    path('buyList/', views.buyList, name="buyList"),
     path('searchresults', SearchResultsView.as_view(), name = "searchresults"),
     path('search/', HomePageView.as_view(), name = "search"),
 
-    path('logout', views.logoutuser, name='logout'),
-    path('login',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login')
+    path('logout/', views.logoutuser, name='logout'),
+    path('login/',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login')
 ]
