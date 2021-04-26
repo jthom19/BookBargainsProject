@@ -24,5 +24,6 @@ urlpatterns = [
     path('addtowishlist/(?P<bookid>\s+)', views.addtowishlist, name='addtowishlist'),
     path('removefromcart/(?P<bookid>\s+)', views.removefromcart, name='removefromcart'),
     path('removefromwishlist/(?P<bookid>\s+)', views.removefromwishlist, name='removefromwishlist'),
+    path('switchfromwishlisttocart/(?P<bookid>\s+)', views.switchfromwishlisttocart, name='switchfromwishlisttocart'),
     path('wishlist/', views.viewwishlist, name='wishlist'),
 ]

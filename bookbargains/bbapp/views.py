@@ -125,7 +125,6 @@ def addtowishlist(request, bookid):
     wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
     wishlist.item.add(booktoadd)
     wishlist.save()
-    messages.success(request, 'Added')
     messages.success(request, "Success! A book has been added to your wishlist!")
     return redirect('search')
 
@@ -138,6 +137,14 @@ def viewwishlist(request):
     currentwishlist = Wishlist.objects.get(owner=request.user)
     context = {'wishlist': currentwishlist}
     return render(request, 'wishlist.html', context)
+
+def switchfromwishlisttocart(request, bookid):
+    booktoswitch = Book.objects.get(uuid=bookid)
+    currentwishlist = Wishlist.objects.get(owner = request.user)
+    currentcart = Cart.objects.get(owner = request.user)
+    currentwishlist.item.remove(booktoswitch)
+    currentcart.cartitem.add(booktoswitch)
+    return redirect('cart')
 
 def removefromcart(request, bookid):
     booktoremove = Book.objects.get(uuid=bookid)
