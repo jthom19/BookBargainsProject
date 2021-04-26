@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
 from django.views.generic import TemplateView, ListView
-from .models import Book, Cart
+from .models import Book, Cart, Wishlist
 from django.db.models import Q
 # Create your views here.
 
@@ -102,9 +102,34 @@ def createmessage(request):
     return render(request, 'messages.html', {'MessageForm':MessageForm})
 
 def addtocart(request, bookid):
-    book = Book.objects.get(uuid=bookid)
+    booktoadd = Book.objects.get(uuid=bookid)
+    cart, created = Cart.objects.get_or_create(owner=request.user)
+    cart.cartitem.add(booktoadd)
+    cart.save()
     context = {
-        'book': book,
+        'cart': cart,
+        'book': booktoadd,
     }
+    return redirect('../')
+
+def addtowishlist(request, bookid):
+    booktoadd = Book.objects.get(uuid=bookid)
+    wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
+    wishlist.item.add(booktoadd)
+    wishlist.save()
+    context = {
+        'wishlist': wishlist,
+        'book': booktoadd,
+    }
+    return redirect('../')
+
+
+def viewcart(request):
+    currentcart = Cart.objects.get(owner=request.user)
+    context = {'cart': currentcart}
     return render(request, 'cart.html', context)
 
+def viewwishlist(request):
+    currentwishlist = Wishlist.objects.get(owner=request.user)
+    context = {'wishlist': currentwishlist}
+    return render(request, 'wishlist.html', context)
