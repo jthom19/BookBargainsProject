@@ -101,7 +101,10 @@ def createmessage(request):
         return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
 
-def viewcart(request):
-    allcarts= Cart.objects.filter(owner=request.user)
-    context= {'allcarts': allcarts}
+def addtocart(request, bookid):
+    book = Book.objects.get(uuid=bookid)
+    context = {
+        'book': book,
+    }
     return render(request, 'cart.html', context)
+
