@@ -2,6 +2,9 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
 from django.views.generic import TemplateView, ListView
@@ -110,7 +113,7 @@ def addtocart(request, bookid):
         'cart': cart,
         'book': booktoadd,
     }
-    return redirect('../')
+    return redirect('search')
 
 def addtowishlist(request, bookid):
     booktoadd = Book.objects.get(uuid=bookid)
@@ -121,8 +124,14 @@ def addtowishlist(request, bookid):
         'wishlist': wishlist,
         'book': booktoadd,
     }
-    return redirect('../')
+    return redirect('search')
 
+
+@receiver(post_save, sender=User)
+def createcartandwishlist(sender, instance, created, **kwargs):
+    if created:
+        Cart.objects.create(owner=instance)
+        Wishlist.objects.create(owner=instance)
 
 def viewcart(request):
     currentcart = Cart.objects.get(owner=request.user)
