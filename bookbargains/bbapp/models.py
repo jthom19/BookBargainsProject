@@ -89,7 +89,7 @@ class Message(models.Model):
 
 
 class Cart(models.Model):
-    owner = models.OneToOneField(User, on_delete = models.SET_NULL, null=True)
+    owner = models.OneToOneField(User, on_delete = models.CASCADE, null=True)
     cartitem = models.ManyToManyField(Book)
     @property
     def total(self):
@@ -98,7 +98,7 @@ class Cart(models.Model):
         return 'This is the cart for: '+str(self.owner.username)
 
 class Wishlist(models.Model):
-    owner = models.OneToOneField(User, on_delete = models.SET_NULL, null=True)
+    owner = models.OneToOneField(User, on_delete = models.CASCADE, null=True)
     item = models.ManyToManyField(Book)
     @property
     def total(self):

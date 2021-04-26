@@ -113,7 +113,7 @@ def addtocart(request, bookid):
         'cart': cart,
         'book': booktoadd,
     }
-    return redirect('search')
+    return redirect('cart')
 
 def addtowishlist(request, bookid):
     booktoadd = Book.objects.get(uuid=bookid)
@@ -124,7 +124,7 @@ def addtowishlist(request, bookid):
         'wishlist': wishlist,
         'book': booktoadd,
     }
-    return redirect('search')
+    return redirect('wishlist')
 
 
 @receiver(post_save, sender=User)
