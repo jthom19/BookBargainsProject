@@ -18,7 +18,7 @@
                 <th class="text-left" scope="col">Book</th>
                 <th class="text-center" scope="col">Condition</th>
                 <th class="text-center" scope="col">Price</th>
-                <th class="text-center" scope="col">Seller</th>
+                <th class="text-center" scope="col">Options</th>
                 <th></th>
             </tr>
         </thead>
@@ -37,7 +37,11 @@
               </td>
               <td class="text-center align-middle">{{book.get_condition_display}}</td>
               <td class="text-center align-middle">${{book.price}}</td>
-              <td class="text-center align-middle"><a href="{% url 'switchfromwishlisttocart' bookid=book.uuid %}" class="btn btn-outline-dark">Add to Cart</a></td>
+              <td class="text-center align-middle">
+                <a href="{% url 'switchfromwishlisttocart' bookid=book.uuid %}" class="btn btn-outline-dark">Add to Cart</a>
+                <br>
+                <a href="" class="mt-3 btn btn-outline-dark">Message {{book.user.username}}</a>
+              </td>
               <td class="text-center align-middle"><a class="btn btn-outline-dark" href="{% url 'removefromwishlist' bookid=book.uuid %}">X</a></td>
             </tr>
             {% endfor %}
@@ -47,9 +51,14 @@
                     <th class="text-center"></th>
                     <th class="text-left" scope="col"></th>
                     <th class="text-center" scope="col"></th>
-                    <th class="text-center"></th>
                     <th class="text-center" scope="col">Total</th>
-                    <th class="text-center" scope="col">${{wishlist.total}}</th>
+                    <th class="text-center" scope="col">
+                        {% if wishlist.total <= 0 %}
+                            $0
+                        {% else %}
+                            ${{wishlist.total}}
+                    </th>
+                    <th class="text-center"></th>
                 </tr>
             </thead>
 

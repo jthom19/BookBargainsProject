@@ -102,6 +102,7 @@ class Wishlist(models.Model):
     item = models.ManyToManyField(Book)
     @property
     def total(self):
-        return self.item.aggregate(Sum('price'))['price__sum']
+        total = self.item.aggregate(Sum('price'))['price__sum']
+
     def __str__(self):
         return 'This is the wishlist for: '+str(self.owner.username)
