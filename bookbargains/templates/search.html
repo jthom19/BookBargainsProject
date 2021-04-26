@@ -30,6 +30,9 @@
           <a href="messaging" class="btn btn-dark">Message seller</a>
           <a href="{% url 'addtocart' bookid=Book.uuid %}" class="btn btn-dark">Add to Cart</a>
         </div>
+        <div class="card-footer">
+          <a href="{% url 'addtowishlist' bookid=Book.uuid %}" class="btn btn-outline-dark bg-light">Add to Wishlist</a>
+        </div>
     </div>
   </div>
   {% endfor %}

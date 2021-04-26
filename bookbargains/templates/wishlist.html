@@ -3,7 +3,7 @@
 
 <div class="container">
     <h2>Cart Items</h2>
-    {% for book in cart.cartitem.all %}
+    {% for book in wishlist.item.all %}
         <p>{{book.title}}</p>
         <p>{{book.price}}</p>
         <p>{{book.user.username}}</p>
@@ -11,4 +11,3 @@
 </div>
 
 {% endblock %}
-

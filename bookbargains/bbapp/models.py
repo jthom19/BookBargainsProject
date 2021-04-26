@@ -93,3 +93,10 @@ class Cart(models.Model):
 
     def __str__(self):
         return 'This is the cart for: '+str(self.owner.username)
+
+class Wishlist(models.Model):
+    owner = models.OneToOneField(User, on_delete = models.SET_NULL, null=True)
+    item = models.ManyToManyField(Book)
+
+    def __str__(self):
+        return 'This is the wishlist for: '+str(self.owner.username)
