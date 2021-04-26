@@ -38,7 +38,7 @@
               <td class="text-center align-middle">{{book.get_condition_display}}</td>
               <td class="text-center align-middle">${{book.price}}</td>
               <td class="text-center align-middle"><a href="{% url 'addtocart' bookid=book.uuid %}" class="btn btn-outline-dark">Add to Cart</a></td>
-              <td class="text-center align-middle"><a class="btn btn-outline-dark" href="{% url 'removefromcart' bookid=book.uuid %}">X</a></td>
+              <td class="text-center align-middle"><a class="btn btn-outline-dark" href="{% url 'removefromwishlist' bookid=book.uuid %}">X</a></td>
             </tr>
             {% endfor %}
             <thead class="thead" style="color: #ffffff; background: #8a100b;">
