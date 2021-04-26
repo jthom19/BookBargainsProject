@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body_block %}
+
+<div class="container">
+    <h2>Cart Items</h2>
+    {% for cart in allcarts %} <!--for all the carts-->
+        {% for cartitem in cart.cartitem.all %} <!--for all the cart items in the cart-->
+            <li>{{ cartitem.book.title }}</li> <!--title of the cart items-->
+            <li>{{ cartitem.book.user.username }}</li> <!--username of the seller of the item in the cart-->
+        {% endfor %}
+    {% endfor %}
+</div>
+
+{% endblock %}

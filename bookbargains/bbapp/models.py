@@ -83,3 +83,15 @@ class Message(models.Model):
 
     def __str__(self):
         return 'Message from ' + str(self.sender) + '.  Subject:' + str(self.subject)
+
+class CartItem(models.Model):
+    book = models.OneToOneField(Book, on_delete = models.SET_NULL, null=True)
+    def __str__(self):
+        return str(self.book.title)
+
+class Cart(models.Model):
+    owner = models.ForeignKey(User, on_delete = models.SET_NULL, null=True)
+    cartitem = models.ManyToManyField(CartItem)
+
+    def __str__(self):
+        return str(self.owner.username)

@@ -17,5 +17,6 @@ urlpatterns = [
 
     path('logout/', views.logoutuser, name='logout'),
     path('login/',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login'),
-    path('messages/', views.createmessage, name='messages')
+    path('messages/', views.createmessage, name='messages'),
+    path('cart/', views.viewcart, name='cart'),
 ]
