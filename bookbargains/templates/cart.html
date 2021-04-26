@@ -19,6 +19,7 @@
                 <th class="text-center" scope="col">Condition</th>
                 <th class="text-center" scope="col">Price</th>
                 <th class="text-center" scope="col">Seller</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -37,6 +38,7 @@
               <td class="text-center align-middle">{{book.get_condition_display}}</td>
               <td class="text-center align-middle">${{book.price}}</td>
               <td class="text-center align-middle"><a href="" class="btn btn-outline-dark">Message {{book.user.username}}</a></td>
+              <td class="text-center align-middle"><a class="btn btn-outline-dark" href="{% url 'removefromcart' bookid=book.uuid %}">X</a></td>
             </tr>
             {% endfor %}
             <thead class="thead" style="color: #ffffff; background: #8a100b;">
@@ -44,6 +46,7 @@
                     <th class="text-center" scope="col"></th>
                     <th class="text-center"></th>
                     <th class="text-left" scope="col"></th>
+                    <th class="text-center" scope="col"></th>
                     <th class="text-center" scope="col"></th>
                     <th class="text-center" scope="col">Total</th>
                     <th class="text-center" scope="col">${{cart.total}}</th>

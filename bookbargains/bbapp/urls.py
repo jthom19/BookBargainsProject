@@ -22,5 +22,7 @@ urlpatterns = [
     path('addtocart/(?P<bookid>\s+)', views.addtocart, name='addtocart'),
     path('cart/', views.viewcart, name='cart'),
     path('addtowishlist/(?P<bookid>\s+)', views.addtowishlist, name='addtowishlist'),
+    path('removefromcart/(?P<bookid>\s+)', views.removefromcart, name='removefromcart'),
+    path('removefromwishlist/(?P<bookid>\s+)', views.removefromwishlist, name='removefromwishlist'),
     path('wishlist/', views.viewwishlist, name='wishlist'),
 ]

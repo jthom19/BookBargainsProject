@@ -32,6 +32,12 @@ def logoutuser(request):
     logout(request)
     return redirect('../')
 
+@receiver(post_save, sender=User)
+def createcartandwishlist(sender, instance, created, **kwargs):
+    if created:
+        Cart.objects.create(owner=instance)
+        Wishlist.objects.create(owner=instance)
+
 class HomePageView(ListView):
     model = Book
     template_name= 'search.html'
@@ -109,10 +115,6 @@ def addtocart(request, bookid):
     cart, created = Cart.objects.get_or_create(owner=request.user)
     cart.cartitem.add(booktoadd)
     cart.save()
-    context = {
-        'cart': cart,
-        'book': booktoadd,
-    }
     return redirect('cart')
 
 def addtowishlist(request, bookid):
@@ -120,18 +122,7 @@ def addtowishlist(request, bookid):
     wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
     wishlist.item.add(booktoadd)
     wishlist.save()
-    context = {
-        'wishlist': wishlist,
-        'book': booktoadd,
-    }
     return redirect('wishlist')
-
-
-@receiver(post_save, sender=User)
-def createcartandwishlist(sender, instance, created, **kwargs):
-    if created:
-        Cart.objects.create(owner=instance)
-        Wishlist.objects.create(owner=instance)
 
 def viewcart(request):
     currentcart = Cart.objects.get(owner=request.user)
@@ -142,3 +133,17 @@ def viewwishlist(request):
     currentwishlist = Wishlist.objects.get(owner=request.user)
     context = {'wishlist': currentwishlist}
     return render(request, 'wishlist.html', context)
+
+def removefromcart(request, bookid):
+    booktoremove = Book.objects.get(uuid=bookid)
+    cart, created = Cart.objects.get_or_create(owner=request.user)
+    cart.cartitem.remove(booktoremove)
+    cart.save()
+    return redirect('cart')
+
+def removefromwishlist(request, bookid):
+    booktoremove = Book.objects.get(uuid=bookid)
+    wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
+    wishlist.item.remove(booktoremove)
+    wishlist.save()
+    return redirect('wishlist')
