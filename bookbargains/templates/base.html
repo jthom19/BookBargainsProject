@@ -69,7 +69,15 @@
         </div>
     </nav>
 
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-light text-center mt-2 mb-0">{{message}}</div>
+      {% endfor %}
+      </ul>
+    {% endif %}
+
     {% block body_block %}
+
     {% endblock %}
     <pre class="tab">      </pre>
     <nav class="navbar navbar-light text-center fixed-bottom" style="background-color: #ebcea5; position: static;">

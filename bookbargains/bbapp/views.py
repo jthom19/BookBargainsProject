@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
@@ -98,6 +99,7 @@ def createlisting(request):
             newlistingform = newlistingform.save(commit=False)
             newlistingform.user = request.user
             newlistingform = newlistingform.save()
+            messages.success(request, "Success! Your book has been listed!")
         return redirect('../')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
@@ -115,14 +117,17 @@ def addtocart(request, bookid):
     cart, created = Cart.objects.get_or_create(owner=request.user)
     cart.cartitem.add(booktoadd)
     cart.save()
-    return redirect('cart')
+    messages.success(request, "Success! A book has been added to the cart!")
+    return redirect('search')
 
 def addtowishlist(request, bookid):
     booktoadd = Book.objects.get(uuid=bookid)
     wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
     wishlist.item.add(booktoadd)
     wishlist.save()
-    return redirect('wishlist')
+    messages.success(request, 'Added')
+    messages.success(request, "Success! A book has been added to your wishlist!")
+    return redirect('search')
 
 def viewcart(request):
     currentcart = Cart.objects.get(owner=request.user)
@@ -139,6 +144,7 @@ def removefromcart(request, bookid):
     cart, created = Cart.objects.get_or_create(owner=request.user)
     cart.cartitem.remove(booktoremove)
     cart.save()
+    messages.success(request, "Success! A book has been removed from your cart!")
     return redirect('cart')
 
 def removefromwishlist(request, bookid):
@@ -146,4 +152,5 @@ def removefromwishlist(request, bookid):
     wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
     wishlist.item.remove(booktoremove)
     wishlist.save()
+    messages.success(request, "Success! A book has been removed from your wishlist!")
     return redirect('wishlist')
