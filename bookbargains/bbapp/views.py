@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
 from django.views.generic import TemplateView, ListView
-from .models import Book
+from .models import Book, Cart
 from django.db.models import Q
 # Create your views here.
 
@@ -43,7 +43,6 @@ class SearchResultsView(ListView):
                 ISBN13__icontains=query) | Q(edition__icontains=query) | Q(
                     condition__icontains=query) | Q(field__icontains=query))
         return object_list
-
 
 def signup(request):
     form = UserCreationForm()
@@ -101,3 +100,11 @@ def createmessage(request):
             newmessageform = newmessageform.save()
         return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
+
+def addtocart(request, bookid):
+    book = Book.objects.get(uuid=bookid)
+    context = {
+        'book': book,
+    }
+    return render(request, 'cart.html', context)
+

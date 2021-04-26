@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
+import uuid
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, null=False, on_delete=models.CASCADE) #User deleted? Delete profile
@@ -47,7 +49,7 @@ SELL_DONATE_CHOICES = (('SO', 'Select One'), ('SE', 'Selling'), ('DO',
                                                                  'Donating'))
 
 class Book(models.Model):
-    #need primary key
+    uuid=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
     user = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, blank=False)
     image = models.ImageField(upload_to = 'images/', null=True, blank=False)
     selldonate = models.CharField(
@@ -83,3 +85,11 @@ class Message(models.Model):
 
     def __str__(self):
         return 'Message from ' + str(self.sender) + '.  Subject:' + str(self.subject)
+
+
+class Cart(models.Model):
+    owner = models.OneToOneField(User, on_delete = models.SET_NULL, null=True)
+    cartitem = models.ManyToManyField(Book)
+
+    def __str__(self):
+        return 'This is the cart for: '+str(self.owner.username)
