@@ -3,7 +3,7 @@
   <section id="clientcreation">
     <section id="inside" class="pb-3 pt-0 pb-lg-5">
         <div class="jumbotron text-center pt-3 pb-0 mt-0 mb-0" style="background-color: transparent; border-radius:0px">
-            <h3 class="display-5 mt-4" style="color:#8a100b;">Welcome back!</h3>
+            <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Welcome Back!</h3>
             <h6 style="color:#8a100b;">To access your own account and profile, please enter your account email and password below.</h6>
         </div>
         <div class="container" style="width: 35%;">
@@ -12,14 +12,11 @@
                     {% csrf_token %}
                     {{ form.non_field_errors }}
                     <div class="form-group">
-                        <label for="{{ form.username.id_for_label }}">Email:</label>
-                        {{ form.username }}
+                        <p style="display: flex; align-items:center"><span class='mr-2'>Email: </span>{{form.username}}</p>
                         {{ form.username.errors }}
                     </div>
                     <div class="form-group">
-                
-                        <label for="{{ form.password.id_for_label }}">Password:</label>
-                        {{ form.password }}
+                        <p style="display: flex; align-items:center"><span class='mr-2'>Password: </span>{{form.password}}</p>
                         {{ form.password.errors }}
                     </div>
                     <div class="text-center justify-content-center"><button type="submit">Login</button></div>
