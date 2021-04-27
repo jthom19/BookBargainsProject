@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 {% load static %}
 {% block body_block %}
+<div class="jumbotron text-center pt-3 pb-0 mt-0 mb-0" style="background-color: transparent; border-radius:0px">
+  <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">LIST A BOOK</h3>
+  <h6 style="color:#8a100b;">Please fill out the following fields to list a book.</h6>
+</div>
 <div class="container">
-<h3 class="text-left mt-4">Please fill out the following fields to list a book.</h3>
 <form method="post" enctype="multipart/form-data" class="w-100 m-auto">
 <div class="row">
-    <div class="col-3 text-center mt-4">
+    <div class="col-3 text-center">
         <div class="thumbnails1 mt-5">
             <img src="../static/bb.png" alt="..." class="img-thumbnail" width="200px" height="300px">
         </div>
@@ -15,7 +18,7 @@
         <br>
 
     </div>
-    <div class="col-6 container mt-5" style="margin-bottom: 100px;">
+    <div class="col-6 container">
             {% csrf_token %}
             {% for field in ListBookForm %}
               <p>
