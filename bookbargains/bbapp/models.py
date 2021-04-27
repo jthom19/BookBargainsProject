@@ -93,7 +93,7 @@ class Cart(models.Model):
     cartitem = models.ManyToManyField(Book)
     @property
     def total(self):
-        return self.cartitem.aggregate(Sum('price'))['price__sum']
+        return self.cartitem.aggregate(Sum('price'))['price__sum'] or 0
     def __str__(self):
         return 'This is the cart for: '+str(self.owner.username)
 
@@ -102,7 +102,6 @@ class Wishlist(models.Model):
     item = models.ManyToManyField(Book)
     @property
     def total(self):
-        total = self.item.aggregate(Sum('price'))['price__sum']
-
+        return self.item.aggregate(Sum('price'))['price__sum'] or 0
     def __str__(self):
         return 'This is the wishlist for: '+str(self.owner.username)

@@ -52,12 +52,7 @@
                     <th class="text-left" scope="col"></th>
                     <th class="text-center" scope="col"></th>
                     <th class="text-center" scope="col">Total</th>
-                    <th class="text-center" scope="col">
-                        {% if wishlist.total <= 0 %}
-                            $0
-                        {% else %}
-                            ${{wishlist.total}}
-                    </th>
+                    <th class="text-center" scope="col">${{wishlist.total}}</th>
                     <th class="text-center"></th>
                 </tr>
             </thead>
