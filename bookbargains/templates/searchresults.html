@@ -1,13 +1,16 @@
 {% extends "base.html" %}
 {% load static %}
 {% block body_block %}
-<h1>Search Results</h1>
 
-<center>
-<form action="{% url 'searchresults' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-</form>
-<center>
+<div class="jumbotron text-center pt-3 pb-0 mt-0 mb-0" style="background-color: transparent; border-radius:0px">
+  <h3 class="display-5 mt-4" style="color:#8a100b;">Search Results</h3>
+  <h6 style="color:#8a100b;">Below is what our system could find for the related search. If no results are available, try a different keyword.</h6>
+  <form action="{% url 'searchresults' %}" method="get">
+    <a style="padding-top: 3px; height: 30px;" class="btn btn-outline-dark" href="{% url 'search' %}">See All</a>
+    <input class="text-center mt-2" name="q" type="text" placeholder="Search...">
+  </form>
+</div>
+
 
 <center>
 <div class="row">

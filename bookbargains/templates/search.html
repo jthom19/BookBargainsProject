@@ -2,13 +2,13 @@
 {% load static %}
 {% block body_block %}
 
-<h1>Search Results</h1>
-
-<center>
-<form action="{% url 'searchresults' %}" method="get">
-  <input name="q" type="text" placeholder="Search...">
-</form>
-<center>
+<div class="jumbotron text-center pt-3 pb-0 mt-0 mb-0" style="background-color: transparent; border-radius:0px">
+  <h3 class="display-5 mt-4" style="color:#8a100b;">Books to Buy</h3>
+  <h6 style="color:#8a100b;">Browse the selection of books that are currently available. If you would like to refine your selection, search for a keyword in the search bar below.</h6>
+  <form action="{% url 'searchresults' %}" method="get">
+    <input class="text-center mt-2" name="q" type="text" placeholder="Search...">
+  </form>
+</div>
 
 <center>
 <div class="row">
