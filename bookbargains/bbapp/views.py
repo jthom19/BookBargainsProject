@@ -144,7 +144,7 @@ def switchfromwishlisttocart(request, bookid):
     currentcart = Cart.objects.get(owner = request.user)
     currentwishlist.item.remove(booktoswitch)
     currentcart.cartitem.add(booktoswitch)
-    return redirect('cart')
+    return redirect('wishlist')
 
 def removefromcart(request, bookid):
     booktoremove = Book.objects.get(uuid=bookid)
