@@ -98,14 +98,13 @@
 
     {% block body_block %}
     {% endblock %}
-    <div><p> </p></div>
     </div>
 
     <footer class="footer">
       <nav id="footer" class="navbar navbar-light text-center" style="position: static; background-color: #ebcea5; width: 100%; bottom:0;">
           <ul class="navbar-nav d-flex flex-sm-row m-auto">
               <li class="nav-item mx-2">
-                  <a class="nav-link" href="#">HOME <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="{% url 'home' %}">HOME <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item mx-2">
                   <a class="nav-link" href="{% url 'search' %}">BUY</a>
@@ -117,10 +116,7 @@
                   <a class="nav-link" href="messaging.html">MESSAGES</a>
               </li>
               <li class="nav-item mx-2">
-                  <a class="nav-link" href="clientcreation.html">PROFILE</a>
-              </li>
-              <li class="nav-item mx-2">
-                  <a class="nav-link" href="clientcreation.html">CONTACT US</a>
+                  <a class="nav-link" href="">CONTACT US</a>
               </li>
           </ul>
       </nav>
