@@ -45,7 +45,7 @@ FIELD_CHOICES = (
     ('BUS', 'Business'),
     ('FIN', 'Finance'),
     ('ACT', 'Accounting'), 
-    ('OTH', 'OTHER'),
+    ('OTH', 'Other'),
     )
 
 SELL_DONATE_CHOICES = (('SO', 'Select One'), ('SE', 'Selling'), ('DO',
