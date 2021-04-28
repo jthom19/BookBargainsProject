@@ -144,6 +144,7 @@ def switchfromwishlisttocart(request, bookid):
     currentcart = Cart.objects.get(owner = request.user)
     currentwishlist.item.remove(booktoswitch)
     currentcart.cartitem.add(booktoswitch)
+    messages.success(request, "Success! A book from your wishlist has been added to your cart.")
     return redirect('wishlist')
 
 def removefromcart(request, bookid):
