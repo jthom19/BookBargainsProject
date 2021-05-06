@@ -14,6 +14,7 @@ urlpatterns = [
     path('buyList/', views.buyList, name="buyList"),
     path('searchresults', SearchResultsView.as_view(), name = "searchresults"),
     path('search/', HomePageView.as_view(), name = "search"),
+    path('searchfilter/', views.allbooks, name='searchfilter'),
 
     path('logout/', views.logoutuser, name='logout'),
     path('login/',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login'),

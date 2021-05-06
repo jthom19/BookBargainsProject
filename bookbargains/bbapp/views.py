@@ -4,13 +4,14 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.shortcuts import render, redirect
-from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
 from django.views.generic import TemplateView, ListView
+from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
 from .models import Book, Cart, Wishlist
-from django.db.models import Q
+from .filters import BookFilter
 # Create your views here.
 
 
@@ -162,3 +163,10 @@ def removefromwishlist(request, bookid):
     wishlist.save()
     messages.success(request, "Success! A book has been removed from your wishlist!")
     return redirect('wishlist')
+
+def allbooks(request):
+    allbooks = Book.objects.all()
+    myFilter = BookFilter(request.GET, queryset=allbooks)
+    allbooks = myFilter.qs
+    context = {'books':allbooks,'filter': myFilter}
+    return render(request, 'searchfilter.html', context)
