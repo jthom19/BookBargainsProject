@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib import messages
@@ -97,11 +98,17 @@ def createlisting(request):
     if request.method == "POST":
         newlistingform = ListBookForm(request.POST, request.FILES)
         if newlistingform.is_valid():
-            newlistingform = newlistingform.save(commit=False)
-            newlistingform.user = request.user
-            newlistingform = newlistingform.save()
-            messages.success(request, "Success! Your book has been listed!")
-        return redirect('../')
+            isbnone = newlistingform.cleaned_data['ISBN13']
+            isbntwo = newlistingform.cleaned_data['ISBN13Conf']
+            if (isbnone == isbntwo):
+                newlistingform = newlistingform.save(commit=False)
+                newlistingform.user = request.user
+                newlistingform = newlistingform.save()
+                messages.success(request, "Success! Your book has been listed!")
+                return redirect('../')
+            else:
+                messages.error(request, "Make sure ISBN13 fields match.")
+                return redirect('newlisting')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
 def createmessage(request):

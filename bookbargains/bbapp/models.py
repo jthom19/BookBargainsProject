@@ -63,6 +63,7 @@ class Book(models.Model):
     title = models.CharField(max_length=100, null=True)
     author = models.CharField(max_length=100, null=True)
     ISBN13 = models.CharField(max_length=13, null=True)
+    ISBN13Conf = models.CharField(max_length=13, null=True)
     edition = models.CharField(max_length=100, null=True)
     condition = models.CharField(
         max_length=2,
@@ -73,7 +74,6 @@ class Book(models.Model):
         max_length=4, choices=FIELD_CHOICES, default='Select One',
         null=True)  #dropdown
     price = models.DecimalField(max_digits=100, decimal_places=2, null=True)
-    reported = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 

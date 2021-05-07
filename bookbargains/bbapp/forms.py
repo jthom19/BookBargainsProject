@@ -38,13 +38,14 @@ class ListBookForm(forms.ModelForm):
             'title': forms.TextInput(attrs={'class':'form-control'}),
             'author': forms.TextInput(attrs={'class':'form-control'}),
             'ISBN13': forms.TextInput(attrs={'class':'form-control'}),
+            'ISBN13Conf': forms.TextInput(attrs={'class':'form-control'}),
             'edition': forms.TextInput(attrs={'class':'form-control'}),
             'condition': forms.Select(attrs={'class':'form-control'}),
             'field': forms.Select(attrs={'class':'form-control'}),
             'price': forms.TextInput(attrs={'class':'form-control'})
             
         }
-        labels = {'selldonate': "Selling or Donating?",}
+        labels = {'selldonate': "Selling or Donating?", 'ISBN13Conf':'Confirm ISBN'}
 
 class MessageForm(ModelForm):
     class Meta:
