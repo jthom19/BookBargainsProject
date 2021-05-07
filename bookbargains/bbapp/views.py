@@ -115,6 +115,13 @@ def createlisting(request):
                 return redirect('newlisting')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
+def allbooks(request):
+    allbooks = Book.objects.all()
+    myFilter = BookFilter(request.GET, queryset=allbooks)
+    allbooks = myFilter.qs
+    context = {'books':allbooks,'filter': myFilter}
+    return render(request, 'searchfilter.html', context)
+
 def createmessage(request):
     newmessageform = MessageForm()
     if request.method == "POST":
@@ -175,9 +182,8 @@ def removefromwishlist(request, bookid):
     messages.success(request, "Success! A book has been removed from your wishlist!")
     return redirect('wishlist')
 
-def allbooks(request):
-    allbooks = Book.objects.all()
-    myFilter = BookFilter(request.GET, queryset=allbooks)
-    allbooks = myFilter.qs
-    context = {'books':allbooks,'filter': myFilter}
-    return render(request, 'searchfilter.html', context)
+def viewmybooks(request):
+    mycurrentbooks = Book.objects.filter(user = request.user)
+    context = {'mycurrentbooks':mycurrentbooks}
+    return render(request, 'mybooks.html', context)
+
