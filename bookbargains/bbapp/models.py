@@ -73,7 +73,7 @@ class Book(models.Model):
         max_length=4, choices=FIELD_CHOICES, default='Select One',
         null=True)  #dropdown
     price = models.DecimalField(max_digits=100, decimal_places=2, null=True)
-
+    reported = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 

@@ -13,7 +13,7 @@ urlpatterns = [
     path('listnew/', views.createlisting, name="newlisting"), #already linked to see new listing
     path('buyList/', views.buyList, name="buyList"),
     path('searchresults', SearchResultsView.as_view(), name = "searchresults"),
-    path('search/', HomePageView.as_view(), name = "search"),
+    path('search/', views.allbooks, name = "search"),
     path('searchfilter/', views.allbooks, name='searchfilter'),
 
     path('logout/', views.logoutuser, name='logout'),
