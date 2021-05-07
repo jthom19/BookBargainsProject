@@ -61,13 +61,17 @@ def signup(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            user.refresh_from_db()  # load the profile instance created by the signal
-            user.save()
             raw_password = form.cleaned_data.get('password1')
-            user = authenticate(username=user.username, password=raw_password)
-            login(request, user)
-            return redirect('../profile/')
+            raw_email = form.cleaned_data.get('username')
+            if 'bc.edu' in raw_email:
+                user = form.save()
+                user.save()
+                user = authenticate(username=user.username, password=raw_password)
+                login(request, user)
+                return redirect('../profile/')
+            else:
+                messages.error(request,"Please enter a valid BC email.")
+                return redirect('signup')
     else:
         form = CreateUserForm()
     return render(request, 'register.html', {'form': form})
