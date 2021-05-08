@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -97,6 +98,7 @@ def createprofile(request):
             form = CreateProfileForm()
     return render(request, 'createprofile.html', {'p_form':p_form})
 
+@login_required
 def createlisting(request):
     newlistingform = ListBookForm(initial={'user':request.user})
     if request.method == "POST":
@@ -115,7 +117,8 @@ def createlisting(request):
                 return redirect('newlisting')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
-def allbooks(request):
+@login_required
+def searchbooks(request):
     allbooks = Book.objects.all()
     myFilter = BookFilter(request.GET, queryset=allbooks)
     allbooks = myFilter.qs
@@ -131,6 +134,7 @@ def createmessage(request):
         return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
 
+@login_required
 def addtocart(request, bookid):
     booktoadd = Book.objects.get(uuid=bookid)
     cart, created = Cart.objects.get_or_create(owner=request.user)
@@ -139,6 +143,7 @@ def addtocart(request, bookid):
     messages.success(request, "Success! A book has been added to the cart!")
     return redirect('search')
 
+@login_required
 def addtowishlist(request, bookid):
     booktoadd = Book.objects.get(uuid=bookid)
     wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
@@ -147,16 +152,19 @@ def addtowishlist(request, bookid):
     messages.success(request, "Success! A book has been added to your wishlist!")
     return redirect('search')
 
+@login_required
 def viewcart(request):
     currentcart = Cart.objects.get(owner=request.user)
     context = {'cart': currentcart}
     return render(request, 'cart.html', context)
 
+@login_required
 def viewwishlist(request):
     currentwishlist = Wishlist.objects.get(owner=request.user)
     context = {'wishlist': currentwishlist}
     return render(request, 'wishlist.html', context)
 
+@login_required
 def switchfromwishlisttocart(request, bookid):
     booktoswitch = Book.objects.get(uuid=bookid)
     currentwishlist = Wishlist.objects.get(owner = request.user)
@@ -166,6 +174,7 @@ def switchfromwishlisttocart(request, bookid):
     messages.success(request, "Success! A book from your wishlist has been added to your cart.")
     return redirect('wishlist')
 
+@login_required
 def removefromcart(request, bookid):
     booktoremove = Book.objects.get(uuid=bookid)
     cart, created = Cart.objects.get_or_create(owner=request.user)
@@ -174,6 +183,7 @@ def removefromcart(request, bookid):
     messages.success(request, "Success! A book has been removed from your cart!")
     return redirect('cart')
 
+@login_required
 def removefromwishlist(request, bookid):
     booktoremove = Book.objects.get(uuid=bookid)
     wishlist, created = Wishlist.objects.get_or_create(owner=request.user)
@@ -182,8 +192,15 @@ def removefromwishlist(request, bookid):
     messages.success(request, "Success! A book has been removed from your wishlist!")
     return redirect('wishlist')
 
+@login_required
 def viewmybooks(request):
     mycurrentbooks = Book.objects.filter(user = request.user)
     context = {'mycurrentbooks':mycurrentbooks}
     return render(request, 'mybooks.html', context)
 
+@login_required
+def removelisting(request, bookid):
+    booktoremove = Book.objects.get(uuid=bookid)
+    booktoremove.delete()
+    messages.success(request, "Your book has been successfully removed from listings. ")
+    return redirect('mybooks')

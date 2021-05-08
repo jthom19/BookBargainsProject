@@ -25,7 +25,7 @@
         </ul>
         {% if user.is_authenticated %}
         <div class="card-footer">
-          <a class="btn btn-light">Delete Book</a>
+          <a href="{% url 'removelisting' bookid=Book.uuid %}" class="btn btn-light">Delete Book</a>
         </div>
         {% endif %}
     </div>

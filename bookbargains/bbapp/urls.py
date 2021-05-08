@@ -13,8 +13,8 @@ urlpatterns = [
     path('listnew/', views.createlisting, name="newlisting"), #already linked to see new listing
     path('buyList/', views.buyList, name="buyList"),
     path('searchresults', SearchResultsView.as_view(), name = "searchresults"),
-    path('search/', views.allbooks, name = "search"),
-    path('searchfilter/', views.allbooks, name='searchfilter'),
+    path('search/', views.searchbooks, name = "search"),
+    path('searchfilter/', views.searchbooks, name='searchfilter'),
 
     path('logout/', views.logoutuser, name='logout'),
     path('login/',djangoviews.LoginView.as_view(template_name="login.html",authentication_form=UserLoginForm),name='login'),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('switchfromwishlisttocart/(?P<bookid>\s+)', views.switchfromwishlisttocart, name='switchfromwishlisttocart'),
     path('wishlist/', views.viewwishlist, name='wishlist'),
     path('mybooks/', views.viewmybooks, name='mybooks'),
+    path('removelisting/(?P<bookid>\s+)', views.removelisting, name='removelisting'),
 ]
