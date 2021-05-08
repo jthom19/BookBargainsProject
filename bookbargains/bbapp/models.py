@@ -48,8 +48,7 @@ FIELD_CHOICES = (
     ('OTH', 'Other'),
     )
 
-SELL_DONATE_CHOICES = (('SO', 'Select One'), ('SE', 'Selling'), ('DO',
-                                                                 'Donating'))
+SELL_DONATE_CHOICES = (('SO', 'Select One'), ('SE', 'Selling'), ('DO','Donating'))
 
 class Book(models.Model):
     uuid=models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
@@ -89,6 +88,17 @@ class Message(models.Model):
     def __str__(self):
         return 'Message from ' + str(self.sender) + '.  Subject:' + str(self.subject)
 
+TRANSACTION_CHOICES = (('In progress', 'In progress'), ('Completed (pending)', 'Completed (pending)'), ('Completed','Completed'))
+
+class Transaction(models.Model):
+    uuid = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
+    buyer = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL,related_name='buyer')
+    seller = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, related_name='seller')
+    book = models.ForeignKey(Book,default = 1,null = True, on_delete = models.SET_NULL, related_name='book')
+    status = models.CharField(max_length=40, choices=TRANSACTION_CHOICES, default='In progress', null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.uuid
 
 class Cart(models.Model):
     owner = models.OneToOneField(User, on_delete = models.CASCADE, null=True)

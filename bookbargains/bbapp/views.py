@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
-from .models import Book, Cart, Wishlist
+from .models import Book, Cart, Wishlist, Transaction
 from .filters import BookFilter
 # Create your views here.
 
@@ -36,6 +36,7 @@ def logoutuser(request):
     logout(request)
     return redirect('../')
 
+#Each time a user is created, a cart and wishlist are also created
 @receiver(post_save, sender=User)
 def createcartandwishlist(sender, instance, created, **kwargs):
     if created:
@@ -57,6 +58,7 @@ class SearchResultsView(ListView):
                     condition__icontains=query) | Q(field__icontains=query))
         return object_list
 
+#This function is called when a user goes to create an account.
 def signup(request):
     form = UserCreationForm()
     if request.method == 'POST':
@@ -77,6 +79,7 @@ def signup(request):
         form = CreateUserForm()
     return render(request, 'register.html', {'form': form})
 
+#This function is called when users go to create a profile after first signing up.
 def createprofile(request):
     p_form = CreateProfileForm(initial={'user':request.user})
     if request.method == "POST":
@@ -98,6 +101,7 @@ def createprofile(request):
             form = CreateProfileForm()
     return render(request, 'createprofile.html', {'p_form':p_form})
 
+#This function is called when the user goes to create a book listing. The ISBN number is confirmed.
 @login_required
 def createlisting(request):
     newlistingform = ListBookForm(initial={'user':request.user})
@@ -117,6 +121,7 @@ def createlisting(request):
                 return redirect('newlisting')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
+#This function is related to viewing all available books and filtering based on user input.
 @login_required
 def searchbooks(request):
     allbooks = Book.objects.all()
@@ -125,6 +130,7 @@ def searchbooks(request):
     context = {'books':allbooks,'filter': myFilter}
     return render(request, 'searchfilter.html', context)
 
+@login_required
 def createmessage(request):
     newmessageform = MessageForm()
     if request.method == "POST":
@@ -133,6 +139,20 @@ def createmessage(request):
             newmessageform = newmessageform.save()
         return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
+
+#This function is called when the user goes to message the user from the cart. It will create a transaction instance.
+@login_required
+def createtransaction(request, bookid):
+    newtransaction = Transaction.objects.create(buyer=request.user, book=Book.objects.get(uuid=bookid), seller=Book.objects.get(uuid=bookid).user)
+    return redirect('home')
+
+
+##These functions are related to the cart and wishlist:
+    #adding to cart
+    #adding to wishlist
+    #changing from wishlist to cart
+    #viewing wishlist
+    #viewing cart
 
 @login_required
 def addtocart(request, bookid):
@@ -192,6 +212,7 @@ def removefromwishlist(request, bookid):
     messages.success(request, "Success! A book has been removed from your wishlist!")
     return redirect('wishlist')
 
+#These two functions have to deal with the user viewing their own book listings and removing if necessary.
 @login_required
 def viewmybooks(request):
     mycurrentbooks = Book.objects.filter(user = request.user)
