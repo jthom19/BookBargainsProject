@@ -51,3 +51,6 @@ class MessageForm(ModelForm):
     class Meta:
         model = Message
         fields = ('recipient','sender','subject','message','unread')
+
+class AddRatingForm(forms.Form):
+    addedrating = forms.FloatField()
