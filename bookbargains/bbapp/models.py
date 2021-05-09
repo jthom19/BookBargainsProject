@@ -8,7 +8,7 @@ import uuid
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, null=False, on_delete=models.CASCADE) #User deleted? Delete profile
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE) #User deleted? Delete profile
     first_name = models.CharField(max_length=100, null=True)
     last_name = models.CharField(max_length = 100, null=True)
     phone = models.CharField(max_length = 10, null=True)
@@ -21,7 +21,7 @@ class Rating(models.Model):
     user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     rating = models.DecimalField(decimal_places=2, max_digits=5, default=5.00)
     def __str__(self):
-        return str(user.username)+' has a rating of '+rating
+        return str(self.user.username)+' has a rating of '+str(self.rating)
 
 BOOK_CONDITION_CHOICES = (('SO', 'Select One'), ('NE', 'New'), ('GR', 'Great'),
                           ('GO', 'Good'), ('AV', 'Average'), ('PO', 'Poor'))
