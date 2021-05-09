@@ -18,8 +18,9 @@ class Profile(models.Model):
         return self.user.username
 
 class Rating(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
-    rating = models.DecimalField(decimal_places=2, max_digits=5, default=5.00)
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    rating = models.FloatField(default=5.00)
+    numberofratings = models.FloatField(default=1.00)
     def __str__(self):
         return str(self.user.username)+' has a rating of '+str(self.rating)
 

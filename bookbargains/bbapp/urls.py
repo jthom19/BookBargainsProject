@@ -31,4 +31,6 @@ urlpatterns = [
     path('wishlist/', views.viewwishlist, name='wishlist'),
     path('mybooks/', views.viewmybooks, name='mybooks'),
     path('removelisting/(?P<bookid>\s+)', views.removelisting, name='removelisting'),
+
+    path('addrating/', views.newrating, name='addrating')
 ]

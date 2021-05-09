@@ -11,7 +11,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
-from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
+from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm, AddRatingForm
 from .models import Book, Cart, Wishlist, Transaction,Rating
 from .filters import BookFilter
 # Create your views here.
@@ -226,3 +226,18 @@ def removelisting(request, bookid):
     booktoremove.delete()
     messages.success(request, "Your book has been successfully removed from listings. ")
     return redirect('mybooks')
+
+def newrating(request):
+    addratingform = AddRatingForm()
+    if request.method == "POST":
+        addratingform = AddRatingForm(request.POST)
+        if addratingform.is_valid():
+            addedrating = addratingform.cleaned_data['addedrating']
+            usertoupdate = User.objects.get(username='ringes@bc.edu')
+            currentuserrating = float(Rating.objects.get(user=usertoupdate).rating)
+            currentnumberofratings = float(Rating.objects.get(user=usertoupdate).numberofratings)
+            messages.success(request, type(currentuserrating))
+            Rating.objects.filter(user=usertoupdate).update(rating=((currentnumberofratings*currentuserrating)+(addedrating))/(currentnumberofratings+1)) #(9*(5.0)+1*(3.0))/10
+            Rating.objects.filter(user=usertoupdate).update(numberofratings=currentnumberofratings+1)
+            return redirect('home')
+    return render(request, 'addrating.html', {'form':addratingform})
