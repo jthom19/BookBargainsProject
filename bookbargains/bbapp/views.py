@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm
-from .models import Book, Cart, Wishlist, Transaction
+from .models import Book, Cart, Wishlist, Transaction, Rating
 from .filters import BookFilter
 # Create your views here.
 
@@ -42,6 +42,7 @@ def createcartandwishlist(sender, instance, created, **kwargs):
     if created:
         Cart.objects.create(owner=instance)
         Wishlist.objects.create(owner=instance)
+        Rating.objects.create(user=instance)
 
 class HomePageView(ListView):
     model = Book
