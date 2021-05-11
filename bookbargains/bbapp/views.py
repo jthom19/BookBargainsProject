@@ -260,4 +260,8 @@ def reportedbook(request,bookid):
     booktoreport = Book.objects.get(uuid=bookid)
     booktoreport.reported = True
     booktoreport.save()
+    #refresh page, adapt search function to exclude reported books
+    #implement flag button on messages page
+    #go over urls, not connected correctly
     return redirect('search')
+    
