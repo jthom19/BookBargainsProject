@@ -141,6 +141,13 @@ def createmessage(request):
         return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
 
+def changeOrdering(request):
+    allbooks = Book.objects.all()
+    myFilter = BookFilter(request.GET, queryset=allbooks)
+    allbooks = myFilter.qs
+    context = {'books': allbooks, 'filter': myFilter}
+    return render(request, 'searchfilter2.html', context)
+
 #This function is called when the user goes to message the user from the cart. It will create a transaction instance.
 @login_required
 def createtransaction(request, bookid):
