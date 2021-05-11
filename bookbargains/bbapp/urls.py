@@ -25,12 +25,14 @@ urlpatterns = [
     path('cart/', views.viewcart, name='cart'),
     path('addtocart/(?P<bookid>\s+)', views.addtocart, name='addtocart'),
     path('addtowishlist/(?P<bookid>\s+)', views.addtowishlist, name='addtowishlist'),
+    path('reportedbook/(?P<bookid>\s+)', views.reportedbook, name='reportedbook'),
     path('removefromcart/(?P<bookid>\s+)', views.removefromcart, name='removefromcart'),
     path('removefromwishlist/(?P<bookid>\s+)', views.removefromwishlist, name='removefromwishlist'),
     path('switchfromwishlisttocart/(?P<bookid>\s+)', views.switchfromwishlisttocart, name='switchfromwishlisttocart'),
     path('wishlist/', views.viewwishlist, name='wishlist'),
     path('mybooks/', views.viewmybooks, name='mybooks'),
     path('removelisting/(?P<bookid>\s+)', views.removelisting, name='removelisting'),
+    
 
     path('addbuyerrating/(?P<inputusername>\s+)', views.newbuyerrating, name='addbuyerrating'),
     path('addsellerrating/(?P<inputusername>\s+)', views.newsellerrating, name='addsellerrating'),

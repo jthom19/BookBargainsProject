@@ -254,3 +254,10 @@ def newbuyerrating(request,inputusername):
             Rating.objects.filter(user=usertoupdate).update(numberofbuyerratings=currentnumberofbuyerratings+1)
             return redirect('home')
     return render(request, 'addrating.html', {'form':addratingform})
+
+@login_required
+def reportedbook(request,bookid):
+    booktoreport = Book.objects.get(uuid=bookid)
+    booktoreport.reported = True
+    booktoreport.save()
+    return redirect('search')
