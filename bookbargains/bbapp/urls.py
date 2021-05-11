@@ -32,5 +32,6 @@ urlpatterns = [
     path('mybooks/', views.viewmybooks, name='mybooks'),
     path('removelisting/(?P<bookid>\s+)', views.removelisting, name='removelisting'),
 
-    path('addrating/', views.newrating, name='addrating')
+    path('addbuyerrating/', views.newbuyerrating, name='addbuyerrating'),
+    path('addsellerrating/', views.newsellerrating, name='addsellerrating'),
 ]
