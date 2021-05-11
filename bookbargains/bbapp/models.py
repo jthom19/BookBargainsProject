@@ -83,7 +83,8 @@ class Book(models.Model):
     reported = models.BooleanField(default=False)
     def __str__(self):
         return self.title
-
+    class Meta:
+        ordering = ["price"]
 
 class Message(models.Model):
     recipient = models.ManyToManyField(User, related_name = 'user')
