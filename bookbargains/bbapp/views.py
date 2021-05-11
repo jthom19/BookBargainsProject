@@ -227,27 +227,27 @@ def removelisting(request, bookid):
     messages.success(request, "Your book has been successfully removed from listings. ")
     return redirect('mybooks')
 
-def newsellerrating(request):
+def newsellerrating(request, inputusername):
     addratingform = AddRatingForm()
     if request.method == "POST":
         addratingform = AddRatingForm(request.POST)
         if addratingform.is_valid():
             addedrating = addratingform.cleaned_data['addedrating']
-            usertoupdate = User.objects.get(username='ringes@bc.edu')
+            usertoupdate = User.objects.get(username=inputusername)
             currentusersellerrating = float(Rating.objects.get(user=usertoupdate).sellerrating)
             currentnumberofsellerratings = float(Rating.objects.get(user=usertoupdate).numberofsellerratings)
-            Rating.objects.filter(user=usertoupdate).update(sellerrating=((currentnumberofsellerratings*currentusersellerrating)+(addedrating))/(currentusersellerrating+1)) #(9*(5.0)+1*(3.0))/10
+            Rating.objects.filter(user=usertoupdate).update(sellerrating=((currentnumberofsellerratings*currentusersellerrating)+(addedrating))/(currentnumberofsellerratings+1)) #(9*(5.0)+1*(3.0))/10
             Rating.objects.filter(user=usertoupdate).update(numberofsellerratings=currentnumberofsellerratings+1)
             return redirect('home')
     return render(request, 'addrating.html', {'form':addratingform})
 
-def newbuyerrating(request):
+def newbuyerrating(request,inputusername):
     addratingform = AddRatingForm()
     if request.method == "POST":
         addratingform = AddRatingForm(request.POST)
         if addratingform.is_valid():
             addedrating = addratingform.cleaned_data['addedrating']
-            usertoupdate = User.objects.get(username='ringes@bc.edu')
+            usertoupdate = User.objects.get(username=inputusername)
             currentuserbuyerrating = float(Rating.objects.get(user=usertoupdate).buyerrating)
             currentnumberofbuyerratings = float(Rating.objects.get(user=usertoupdate).numberofbuyerratings)
             Rating.objects.filter(user=usertoupdate).update(buyerrating=((currentnumberofbuyerratings*currentuserbuyerrating)+(addedrating))/(currentnumberofbuyerratings+1)) #(9*(5.0)+1*(3.0))/10

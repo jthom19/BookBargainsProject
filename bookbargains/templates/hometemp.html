@@ -33,7 +33,8 @@
       <h6 class="mt-2 mb-0">Sell unwanted books with ease</h6>
       <br>
       {% if user.is_authenticated %}
-        <p></p>
+      <a class="btn btn-outline-dark" href="{% url 'addbuyerrating' inputusername=request.user.username %}">Add Buyer Rating</a>
+      <a class="btn btn-outline-dark" href="{% url 'addsellerrating' inputusername=request.user.username %}">Add Seller Rating</a>
       {% else %}
         <span>
           <button class="btn mx-auto mt-3" style="color: #ffffff; background-color: #8a100b;">

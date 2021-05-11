@@ -54,3 +54,4 @@ class MessageForm(ModelForm):
 
 class AddRatingForm(forms.Form):
     addedrating = forms.FloatField()
+    labels = {'addedrating': "Rating: "}
