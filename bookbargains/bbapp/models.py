@@ -19,10 +19,12 @@ class Profile(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    rating = models.FloatField(default=5.00)
-    numberofratings = models.FloatField(default=1.00)
+    sellerrating = models.FloatField(default=5.00)
+    buyerrating = models.FloatField(default=5.00)
+    numberofsellerratings = models.FloatField(default=1.00)
+    numberofbuyerratings = models.FloatField(default=1.00)
     def __str__(self):
-        return str(self.user.username)+' has a rating of '+str(self.rating)
+        return str(self.user.username)+' has a seller rating of '+str(self.sellerrating)+' and a buyer rating of '+str(self.buyerrating)
 
 BOOK_CONDITION_CHOICES = (('SO', 'Select One'), ('NE', 'New'), ('GR', 'Great'),
                           ('GO', 'Good'), ('AV', 'Average'), ('PO', 'Poor'))

@@ -227,17 +227,32 @@ def removelisting(request, bookid):
     messages.success(request, "Your book has been successfully removed from listings. ")
     return redirect('mybooks')
 
-def newrating(request):
+def newsellerrating(request):
     addratingform = AddRatingForm()
     if request.method == "POST":
         addratingform = AddRatingForm(request.POST)
         if addratingform.is_valid():
             addedrating = addratingform.cleaned_data['addedrating']
             usertoupdate = User.objects.get(username='ringes@bc.edu')
-            currentuserrating = float(Rating.objects.get(user=usertoupdate).rating)
-            currentnumberofratings = float(Rating.objects.get(user=usertoupdate).numberofratings)
+            currentusersellerrating = float(Rating.objects.get(user=usertoupdate).sellerrating)
+            currentnumberofsellerratings = float(Rating.objects.get(user=usertoupdate).numberofsellerratings)
             messages.success(request, type(currentuserrating))
-            Rating.objects.filter(user=usertoupdate).update(rating=((currentnumberofratings*currentuserrating)+(addedrating))/(currentnumberofratings+1)) #(9*(5.0)+1*(3.0))/10
-            Rating.objects.filter(user=usertoupdate).update(numberofratings=currentnumberofratings+1)
+            Rating.objects.filter(user=usertoupdate).update(buyerrating=((currentnumberofsellerratings*currentusersellerrating)+(addedrating))/(currentusersellerrating+1)) #(9*(5.0)+1*(3.0))/10
+            Rating.objects.filter(user=usertoupdate).update(numberofsellerratings=currentnumberofsellerratings+1)
+            return redirect('home')
+    return render(request, 'addrating.html', {'form':addratingform})
+
+def newbuyerrating(request):
+    addratingform = AddRatingForm()
+    if request.method == "POST":
+        addratingform = AddRatingForm(request.POST)
+        if addratingform.is_valid():
+            addedrating = addratingform.cleaned_data['addedrating']
+            usertoupdate = User.objects.get(username='ringes@bc.edu')
+            currentuserbuyerrating = float(Rating.objects.get(user=usertoupdate).buyerrating)
+            currentnumberofbuyerratings = float(Rating.objects.get(user=usertoupdate).numberofbuyerratings)
+            messages.success(request, type(currentuserrating))
+            Rating.objects.filter(user=usertoupdate).update(buyerrating=((currentnumberofbuyerratings*currentuserbuyerrating)+(addedrating))/(currentnumberofbuyerratings+1)) #(9*(5.0)+1*(3.0))/10
+            Rating.objects.filter(user=usertoupdate).update(numberofbuyerratings=currentnumberofbuyerratings+1)
             return redirect('home')
     return render(request, 'addrating.html', {'form':addratingform})
