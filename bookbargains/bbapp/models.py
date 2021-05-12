@@ -104,6 +104,7 @@ class Transaction(models.Model):
 class Message(models.Model):
     text = models.TextField()
     sender = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='recipient')
     transaction = models.ForeignKey(Transaction, null=True, on_delete=models.CASCADE, related_name='transaction')
     def __str__(self):
         return 'Message: '+str(self.text)

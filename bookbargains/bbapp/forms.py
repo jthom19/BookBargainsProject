@@ -52,7 +52,9 @@ class ListBookForm(forms.ModelForm):
 class MessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = ('text',)
+        widgets = {'text': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter message text here:'})}
+        labels = {'text': 'New message:',}
 
 class AddRatingForm(forms.Form):
     addedrating = forms.FloatField()

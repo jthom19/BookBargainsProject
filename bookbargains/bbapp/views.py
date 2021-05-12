@@ -131,18 +131,6 @@ def searchbooks(request):
     context = {'books':allbooks,'filter': myFilter}
     return render(request, 'searchfilter.html', context)
 
-@login_required
-def createmessage(request):
-    newmessageform = MessageForm()
-    if request.method == "POST":
-        newmessageform = MessageForm(request.POST)
-        if newmessageform.is_valid():
-            newmessageform = newmessageform.save(commit=False)
-            newmessageform.sender = request.user
-            newmessageform = newmessageform.save()
-        return redirect('../')
-    return render(request, 'messages.html', {'MessageForm':MessageForm})
-
 def changeOrdering(request):
     allbooks = Book.objects.all()
     myFilter = BookFilter(request.GET, queryset=allbooks)
@@ -285,9 +273,38 @@ def viewmytransactions(request):
     return render(request, 'mytransactions.html', context)
 
 @login_required
-def viewtransactionmessages(request, selleruser, buyeruser):
+def viewtransactionmessages(request, selleruser, buyeruser, transactionid):
+    transactiontoview = Transaction.objects.get(uuid=transactionid)
     messagesseller = User.objects.get(username=selleruser)
     messagesbuyer = User.objects.get(username=buyeruser)
     messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer))
-    context={'transactionmessages':messages}
+
+    if messagesseller == request.user:
+        notcurrentuser = messagesbuyer
+    else:
+        notcurrentuser = messagesseller
+
+    newmessageform = MessageForm()
+    if request.method=="POST":
+        newmessageform=MessageForm(request.POST)
+        if newmessageform.is_valid():
+            newmessageform = newmessageform.save(commit=False)
+            newmessageform.sender = request.user
+            newmessageform.recipient = notcurrentuser
+            newmessageform.transaction = transactiontoview
+            newmessageform = newmessageform.save()
+    context={'transactionmessages':messages, 'transaction':transactiontoview, 'form':newmessageform}
     return render(request, 'transactionmessages.html', context)
+
+
+@login_required
+def createmessage(request):
+    newmessageform = MessageForm()
+    if request.method == "POST":
+        newmessageform = MessageForm(request.POST)
+        if newmessageform.is_valid():
+            newmessageform = newmessageform.save(commit=False)
+            newmessageform.sender = request.user
+            newmessageform = newmessageform.save()
+        return redirect('../')
+    return render(request, 'messages.html', {'MessageForm':MessageForm})
