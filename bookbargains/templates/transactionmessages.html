@@ -42,6 +42,11 @@
         </div>
         <div class="col-8">
             {% if transactionmessages %}
+            <div class="container text-right">
+                <p class="p-1">
+                    <span><a href="{% url 'donewithtransaction' doneusername=request.user.username transactionid=transaction.uuid %}" class="btn btn-dark">Transaction is DONE!</a></span>
+                </p>
+            </div>
                 {% for m in transactionmessages %}
                     {% if m.sender == request.user %}
                         <div class="d-flex flex-row justify-content-end p-3 my-1 mx-3 rounded" style="position: relative; background-color: #ebcea5;">

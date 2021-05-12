@@ -43,9 +43,6 @@
             </ul>
             {% if user.is_authenticated %}
             <div class="card-footer">
-              <a href="/messaging" class="btn btn-outline-dark" style="margin-bottom: 2px;">Message {{Book.user}}</a>
-            </div>
-            <div class="card-footer">
               <a href="{% url 'addtocart' bookid=Book.uuid %}" class="btn btn-outline-dark "><i class="fa fa-cart-plus"></i></a>
               <a href="{% url 'addtowishlist' bookid=Book.uuid %}" class="btn btn-outline-dark"><i class="fa fa-bookmark"></i></a>
               <a href="{% url 'reportedbook' bookid=Book.uuid %}" class="btn btn-outline-danger"><i class="fa fa-flag"></i></a>
