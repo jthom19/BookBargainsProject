@@ -89,16 +89,6 @@ class Book(models.Model):
     class Meta:
         ordering = ["price"]
 
-class Message(models.Model):
-    recipient = models.ManyToManyField(User, related_name = 'user')
-    sender = models.ForeignKey(User, on_delete = models.CASCADE, related_name = 'sender')
-    subject = models.CharField(max_length = 1000, blank = True)
-    message = models.TextField()
-    sent = models.DateTimeField(auto_now_add = True)
-    unread = models.BooleanField(default = True)
-
-    def __str__(self):
-        return 'Message from ' + str(self.sender) + '.  Subject:' + str(self.subject)
 
 TRANSACTION_CHOICES = (('In progress', 'In progress'), ('Completed (pending)', 'Completed (pending)'), ('Completed','Completed'))
 
@@ -108,9 +98,16 @@ class Transaction(models.Model):
     seller = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, related_name='seller')
     book = models.ForeignKey(Book,default = 1,null = True, on_delete = models.SET_NULL, related_name='book')
     status = models.CharField(max_length=40, choices=TRANSACTION_CHOICES, default='In progress', null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
     def __str__(self):
-        return self.uuid
+        return "Buyer: "+str(self.buyer)+"____________"+"Seller: "+str(self.seller)
+
+class Message(models.Model):
+    text = models.TextField()
+    sender = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='recipient')
+    transaction = models.ForeignKey(Transaction, null=True, on_delete=models.CASCADE, related_name='transaction')
+    def __str__(self):
+        return 'Message: '+str(self.text)
 
 class Cart(models.Model):
     owner = models.OneToOneField(User, on_delete = models.CASCADE, null=True)

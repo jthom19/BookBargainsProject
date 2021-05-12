@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm, AddRatingForm
-from .models import Book, Cart, Wishlist, Transaction, Rating, Profile, Reported
+from .models import Book, Cart, Wishlist, Transaction, Rating, Profile, Message, Reported
 from .filters import BookFilter
 # Create your views here.
 
@@ -128,18 +128,8 @@ def searchbooks(request):
     allbooks = Book.objects.all()
     myFilter = BookFilter(request.GET, queryset=allbooks)
     allbooks = myFilter.qs
-    context = {'books':allbooks,'filter': myFilter}
+    context = {'books':allbooks,'filter': myFilter,}
     return render(request, 'searchfilter.html', context)
-
-@login_required
-def createmessage(request):
-    newmessageform = MessageForm()
-    if request.method == "POST":
-        newmessageform = MessageForm(request.POST)
-        if newmessageform.is_valid():
-            newmessageform = newmessageform.save()
-        return redirect('../')
-    return render(request, 'messages.html', {'MessageForm':MessageForm})
 
 def changeOrdering(request):
     allbooks = Book.objects.all()
@@ -152,8 +142,12 @@ def changeOrdering(request):
 @login_required
 def createtransaction(request, bookid):
     newtransaction = Transaction.objects.create(buyer=request.user, book=Book.objects.get(uuid=bookid), seller=Book.objects.get(uuid=bookid).user)
-    return redirect('home')
-
+    booktoremove = Book.objects.get(uuid=bookid)
+    cart, created = Cart.objects.get_or_create(owner=request.user)
+    cart.cartitem.remove(booktoremove)
+    cart.save()
+    messages.success(request, "Success! You have messaged the owner and have created a transaction. This item will be removed from your cart.")
+    return redirect('viewmytransactions')
 
 ##These functions are related to the cart and wishlist:
     #adding to cart
@@ -236,33 +230,6 @@ def removelisting(request, bookid):
     messages.success(request, "Your book has been successfully removed from listings. ")
     return redirect('mybooks')
 
-def newsellerrating(request, inputusername):
-    addratingform = AddRatingForm()
-    if request.method == "POST":
-        addratingform = AddRatingForm(request.POST)
-        if addratingform.is_valid():
-            addedrating = addratingform.cleaned_data['addedrating']
-            usertoupdate = User.objects.get(username=inputusername)
-            currentusersellerrating = float(Rating.objects.get(user=usertoupdate).sellerrating)
-            currentnumberofsellerratings = float(Rating.objects.get(user=usertoupdate).numberofsellerratings)
-            Rating.objects.filter(user=usertoupdate).update(sellerrating=((currentnumberofsellerratings*currentusersellerrating)+(addedrating))/(currentnumberofsellerratings+1)) #(9*(5.0)+1*(3.0))/10
-            Rating.objects.filter(user=usertoupdate).update(numberofsellerratings=currentnumberofsellerratings+1)
-            return redirect('home')
-    return render(request, 'addrating.html', {'form':addratingform})
-
-def newbuyerrating(request,inputusername):
-    addratingform = AddRatingForm()
-    if request.method == "POST":
-        addratingform = AddRatingForm(request.POST)
-        if addratingform.is_valid():
-            addedrating = addratingform.cleaned_data['addedrating']
-            usertoupdate = User.objects.get(username=inputusername)
-            currentuserbuyerrating = float(Rating.objects.get(user=usertoupdate).buyerrating)
-            currentnumberofbuyerratings = float(Rating.objects.get(user=usertoupdate).numberofbuyerratings)
-            Rating.objects.filter(user=usertoupdate).update(buyerrating=((currentnumberofbuyerratings*currentuserbuyerrating)+(addedrating))/(currentnumberofbuyerratings+1)) #(9*(5.0)+1*(3.0))/10
-            Rating.objects.filter(user=usertoupdate).update(numberofbuyerratings=currentnumberofbuyerratings+1)
-            return redirect('home')
-    return render(request, 'addrating.html', {'form':addratingform})
 
 @login_required
 def reportedbook(request,bookid):
@@ -284,3 +251,89 @@ def reportedbook(request,bookid):
     #go over urls, not connected correctly
     return redirect('searchfilter')
     
+@login_required
+def viewmytransactions(request):
+    transactionsasseller = Transaction.objects.filter(seller=request.user) #get all transactions where the current user is the seller
+    transactionsasbuyer = Transaction.objects.filter(buyer=request.user) #get all transactions where the current user is the buyer
+    context = {'transactionsasseller':transactionsasseller, 'transactionsasbuyer':transactionsasbuyer}
+    return render(request, 'mytransactions.html', context)
+
+@login_required
+def viewtransactionmessages(request, selleruser, buyeruser, transactionid):
+    transactiontoview = Transaction.objects.get(uuid=transactionid)
+    messagesseller = User.objects.get(username=selleruser)
+    messagesbuyer = User.objects.get(username=buyeruser)
+    messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer))
+
+    if messagesseller == request.user:
+        notcurrentuser = messagesbuyer
+    else:
+        notcurrentuser = messagesseller
+
+    newmessageform = MessageForm()
+    if request.method=="POST":
+        newmessageform=MessageForm(request.POST)
+        if newmessageform.is_valid():
+            newmessageform = newmessageform.save(commit=False)
+            newmessageform.sender = request.user
+            newmessageform.recipient = notcurrentuser
+            newmessageform.transaction = transactiontoview
+            newmessageform = newmessageform.save()
+    context={'transactionmessages':messages, 'transaction':transactiontoview, 'form':newmessageform}
+    return render(request, 'transactionmessages.html', context)
+
+
+@login_required
+def createmessage(request):
+    newmessageform = MessageForm()
+    if request.method == "POST":
+        newmessageform = MessageForm(request.POST)
+        if newmessageform.is_valid():
+            newmessageform = newmessageform.save(commit=False)
+            newmessageform.sender = request.user
+            newmessageform = newmessageform.save()
+        return redirect('../')
+    return render(request, 'messages.html', {'MessageForm':MessageForm})
+
+@login_required
+def donewithtransaction(request, doneusername, transactionid):
+    doneuser = User.objects.get(username=doneusername)
+    
+    transaction = Transaction.objects.get(uuid=transactionid)
+    if transaction.get_status_display() == 'In progress':
+        transaction.status = 'Completed (pending)'
+        transaction.save()
+    elif transaction.get_status_display() == 'Completed (pending)':
+        transaction.status = 'Completed'
+        transaction.save()
+    
+    if doneuser==transaction.buyer:
+        usertorate=transaction.seller
+        addratingform = AddRatingForm()
+        if request.method == "POST":
+            addratingform = AddRatingForm(request.POST)
+            if addratingform.is_valid():
+                addedrating = addratingform.cleaned_data['addedrating']
+                usertoupdate = User.objects.get(username=transaction.seller)
+                currentusersellerrating = float(Rating.objects.get(user=usertoupdate).sellerrating)
+                currentnumberofsellerratings = float(Rating.objects.get(user=usertoupdate).numberofsellerratings)
+                Rating.objects.filter(user=usertoupdate).update(sellerrating=((currentnumberofsellerratings*currentusersellerrating)+(addedrating))/(currentnumberofsellerratings+1)) #(9*(5.0)+1*(3.0))/10
+                Rating.objects.filter(user=usertoupdate).update(numberofsellerratings=currentnumberofsellerratings+1)
+                messages.success(request, "Thank you for rating this user!")
+                return redirect('home')
+    else:
+        usertorate=transaction.buyer
+        addratingform = AddRatingForm()
+        if request.method == "POST":
+            addratingform = AddRatingForm(request.POST)
+            if addratingform.is_valid():
+                addedrating = addratingform.cleaned_data['addedrating']
+                usertoupdate = User.objects.get(username=transaction.buyer)
+                currentuserbuyerrating = float(Rating.objects.get(user=usertoupdate).buyerrating)
+                currentnumberofbuyerratings = float(Rating.objects.get(user=usertoupdate).numberofbuyerratings)
+                Rating.objects.filter(user=usertoupdate).update(buyerrating=((currentnumberofbuyerratings*currentuserbuyerrating)+(addedrating))/(currentnumberofbuyerratings+1)) #(9*(5.0)+1*(3.0))/10
+                Rating.objects.filter(user=usertoupdate).update(numberofbuyerratings=currentnumberofbuyerratings+1)
+                messages.success(request, "Thank you for rating this user!")
+                return redirect('home')
+
+    return render(request, 'addrating.html', {'form':addratingform, 'rateduser':usertorate,})
