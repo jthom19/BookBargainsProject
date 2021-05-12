@@ -117,8 +117,8 @@ def createlisting(request):
                 newlistingform = newlistingform.save()
                 messages.success(request, "Success! Your book has been listed!")
                 return redirect('../')
-            else:
-                messages.error(request, "Make sure ISBN13 fields match.")
+            elif (isbnone!=isbntwo):
+                messages.success(request, "Make sure ISBN13 fields match.")
                 return redirect('newlisting')
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
@@ -217,7 +217,7 @@ def viewmyprofile(request):
 def removelisting(request, bookid):
     booktoremove = Book.objects.get(uuid=bookid)
     booktoremove.delete()
-    messages.success(request, "Your book has been successfully removed from listings. ")
+    messages.success(request, "Success! Your book has been successfully removed from listings. ")
     return redirect('mybooks')
 
 
@@ -230,7 +230,7 @@ def reportedbook(request,bookid):
     new_report.save()
     booktoreport.reported = True
     booktoreport.save()
-    messages.success(request, "This book has been reported.")
+    messages.success(request, "Thank you! This book has been reported. An admin may follow up with you if more information is needed.")
     return redirect('searchfilter')
 
 def reporteduser(request,transactionid):
@@ -246,7 +246,7 @@ def reporteduser(request,transactionid):
     reportattransaction.sellerhasrated = True
     reportattransaction.status = 'Completed'
     reportattransaction.save()
-    messages.success(request, "This user has been reported.")
+    messages.success(request, "Thank you! This user has been reported. An admin may follow up with you if more information is needed.")
     return redirect('viewmytransactions')
 
 
