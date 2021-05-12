@@ -31,7 +31,7 @@ urlpatterns = [
     path('removefromwishlist/(?P<bookid>\s+)', views.removefromwishlist, name='removefromwishlist'),
     path('switchfromwishlisttocart/(?P<bookid>\s+)', views.switchfromwishlisttocart, name='switchfromwishlisttocart'),
     path('wishlist/', views.viewwishlist, name='wishlist'),
-    path('mybooks/', views.viewmybooks, name='mybooks'),
+    path('myprofile/', views.viewmyprofile, name='myprofile'),
     path('removelisting/(?P<bookid>\s+)', views.removelisting, name='removelisting'),
     
 
