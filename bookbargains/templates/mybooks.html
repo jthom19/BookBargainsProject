@@ -3,12 +3,35 @@
 {% block body_block %}
 
 <div class="jumbotron text-center pt-3 pb-0 mt-0 mb-0" style="background-color: transparent; border-radius:0px">
-  <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">YOUR BOOKS</h3>
-  <h5 class="mb-0" style="color:#8a100b;">Below are all the books you have currently listed.</h5>
+  <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">MY PROFILE</h3>
+  <h5 class="mb-0" style="color:#8a100b;">Below is the information currently associated with you user, including profile information as well as any books you may have listed.</h5>
+</div>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-2 text-center justify-content-center" style="align-self:center">
+      <div>
+        <h5 style="color: #8a100b; font-family: 'Oswald', sans-serif;">USER PROFILE</h5>
+        <p><i style="color: #8a100b;" class="fas fa-user-circle fa-5x"></i></p>
+      </div>
+    </div>
+    <div class="col-4 text-center p-3 rounded" style="background-color: #8a100b; color: #ffffff;">
+      <h5>Welcome, {{request.user.get_full_name}}!</h5>
+      <p class="my-1">Email: {{request.user.email}}</p>
+      <p class="my-1">Phone: ({{myprofile.phone|slice:":3"}})-{{myprofile.phone|slice:"3:6"}}-{{myprofile.phone|slice:"6:10"}}</p>
+      <p class="my-1">Major: {{myprofile.major}}</p>
+      <p class="my-1">Housing: {{myprofile.housing}}</p>
+    </div>
+    <div class="col-3"></div>
+  </div>
 </div>
 
 <center>
 <div class="row">
+  {% if mycurrentbooks %}
+    <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">MY CURRENT LISTINGS</h3>
+  {% endif %}
   {% for Book in mycurrentbooks %}
   <div class="pt-4 col-sm-3">
       <div class="card bg-light" style="width: 18rem;">

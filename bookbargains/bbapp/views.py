@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm, AddRatingForm
-from .models import Book, Cart, Wishlist, Transaction,Rating
+from .models import Book, Cart, Wishlist, Transaction, Rating, Profile
 from .filters import BookFilter
 # Create your views here.
 
@@ -224,7 +224,8 @@ def removefromwishlist(request, bookid):
 @login_required
 def viewmybooks(request):
     mycurrentbooks = Book.objects.filter(user = request.user)
-    context = {'mycurrentbooks':mycurrentbooks}
+    myprofile = Profile.objects.get(user = request.user)
+    context = {'mycurrentbooks':mycurrentbooks, 'myprofile':myprofile}
     return render(request, 'mybooks.html', context)
 
 @login_required
