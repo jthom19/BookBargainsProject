@@ -9,19 +9,21 @@
 
 <div class="container mt-5">
   <div class="row">
-    <div class="col-3"></div>
-    <div class="col-2 text-center justify-content-center " style="align-self:center;">
+    <div class="col-2"></div>
+    <div class="col-3 text-center justify-content-center " style="align-self:center;">
       <div>
         <h5 style="color: #8a100b; font-family: 'Oswald', sans-serif;">USER PROFILE</h5>
-        <p><i style="color: #8a100b;" class="fas fa-user-circle fa-7x"></i></p>
+        <p><i style="color: #8a100b;" class="fas fa-user-circle fa-5x"></i></p>
+        <p class="my-1">Rating as Buyer: <i class="fa fa-star" style="color: #8a100b;"></i> {{myratings.buyerrating|floatformat:2}}</p>
+        <p class="my-1">Rating as Seller: <i class="fa fa-star" style="color: #8a100b;"></i> {{myratings.sellerrating|floatformat:2}}</p>
       </div>
     </div>
-    <div class="col-4 text-center p-3 rounded" style="background-color: #8a100b; color: #ffffff;">
-      <h5>Welcome, {{request.user.get_full_name}}!</h5>
+    <div class="col-4 text-center p-3 rounded" style="background-color: #ebcea5; color: #000;">
+      <h5 class="mt-1">Welcome, {{request.user.get_full_name}}!</h5>
       <p class="my-1">Email: {{request.user.email}}</p>
       <p class="my-1">Phone: ({{myprofile.phone|slice:":3"}})-{{myprofile.phone|slice:"3:6"}}-{{myprofile.phone|slice:"6:10"}}</p>
       <p class="my-1">Major: {{myprofile.major}}</p>
-      <p class="my-1">Housing: {{myprofile.housing}}</p>
+      <p class="my-1 mb-0">Housing: {{myprofile.housing}}</p>
     </div>
     <div class="col-3"></div>
   </div>
@@ -54,9 +56,6 @@
             <li class="list-group-item py-2">Price: ${{Book.price}}</li>
           </ul>
           {% if user.is_authenticated %}
-          <div class="card-footer">
-            <a href="/messaging" class="btn btn-outline-dark" style="margin-bottom: 2px;">Message Seller</a>
-          </div>
           <div class="card-footer">
             <a href="{% url 'addtocart' bookid=Book.uuid %}" class="btn btn-outline-dark "><i class="fa fa-cart-plus"></i></a>
             <a href="{% url 'addtowishlist' bookid=Book.uuid %}" class="btn btn-outline-dark"><i class="fa fa-bookmark"></i></a>
