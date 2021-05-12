@@ -23,8 +23,10 @@
             {% for field in ListBookForm %}
               <p>
                 {% if not forloop.first %}
-                  {{ field.label_tag }}
-                  {{ field }}
+                  {% if not forloop.last %}
+                    {{ field.label_tag }}
+                    {{ field }}
+                  {% endif %}
                 {% endif %}
                 {% if field.help_text %}
                   <small style="color: grey">{{ field.help_text }}</small>
