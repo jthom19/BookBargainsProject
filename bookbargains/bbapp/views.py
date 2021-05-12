@@ -241,7 +241,7 @@ def reportedbook(request,bookid):
     #implement flag button on messages page
     #go over urls, not connected correctly
     return redirect('searchfilter')
-    
+
 
 #This function is called when the user goes to message the user from the cart. It will create a transaction instance.
 @login_required

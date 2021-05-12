@@ -53,7 +53,7 @@ class MessageForm(ModelForm):
     class Meta:
         model = Message
         fields = ('text',)
-        widgets = {'text': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Enter message text here:'})}
+        widgets = {'text': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Type message here.'})}
         labels = {'text': 'New message:',}
 
 class AddRatingForm(forms.Form):
