@@ -256,7 +256,7 @@ def viewtransactionmessages(request, selleruser, buyeruser, transactionid):
     transactiontoview = Transaction.objects.get(uuid=transactionid)
     messagesseller = User.objects.get(username=selleruser)
     messagesbuyer = User.objects.get(username=buyeruser)
-    messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer))
+    messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer)).order_by('creation_time')
 
     if messagesseller == request.user:
         notcurrentuser = messagesbuyer
