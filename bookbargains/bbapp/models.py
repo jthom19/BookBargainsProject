@@ -148,3 +148,8 @@ class Reported(models.Model):
     reporter = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL,related_name='reporter')
     reported = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, related_name='reported')
     resolved = models.BooleanField(default = False)
+    reportedtransaction = models.ForeignKey(Transaction, null=True, on_delete=models.SET_NULL)
+    reportedbook = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL, related_name='reportedbook')
+
+    def __str__(self):
+        return str(self.reporter)+' has reported '+str(self.reported)

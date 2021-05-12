@@ -226,7 +226,7 @@ def reportedbook(request,bookid):
     booktoreport = Book.objects.get(uuid=bookid)
     userreporting = request.user
     userreported = booktoreport.user
-    new_report = Reported(reporter = userreporting, reported = userreported)
+    new_report = Reported(reporter = userreporting, reported = userreported, reportedbook = booktoreport)
     new_report.save()
     booktoreport.reported = True
     booktoreport.save()
@@ -238,7 +238,7 @@ def reporteduser(request,transactionid):
     booktoreport = Book.objects.get(uuid=reportattransaction.book.uuid)
     userreporting = request.user
     userreported = booktoreport.user
-    new_report = Reported(reporter = userreporting, reported = userreported)
+    new_report = Reported(reporter = userreporting, reported = userreported, reportedtransaction=reportattransaction)
     new_report.save()
     booktoreport.reported = True
     booktoreport.save()
