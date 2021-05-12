@@ -37,7 +37,4 @@ urlpatterns = [
     path('myprofile/', views.viewmyprofile, name='myprofile'),
     path('removelisting/(?P<bookid>\s+)', views.removelisting, name='removelisting'),
     
-
-    path('addbuyerrating/(?P<inputusername>\s+)', views.newbuyerrating, name='addbuyerrating'),
-    path('addsellerrating/(?P<inputusername>\s+)', views.newsellerrating, name='addsellerrating'),
 ]
