@@ -28,6 +28,7 @@
   <div class="row">
     {% for Book in books  %}
       {% if not Book.reported %}
+      {% if not Book.sold %}
       <div class="pt-4 col-sm-3">
           <div class="card bg-light" style="width: 18rem;">
             <img class=“card-img-top w-100" style="height:286px;width:286px;" src="{{Book.image.url}}" alt="img" >
@@ -53,6 +54,7 @@
         <div><p></p></div>
       </div>
       {% else %}
+      {% endif %}
       {% endif %}
     {% endfor %}
   </div>

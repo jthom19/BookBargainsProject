@@ -317,6 +317,12 @@ def donewithtransaction(request, doneusername, transactionid):
         transaction.sellerhasrated = True
         transaction.save()
 
+    if transaction.buyerhasrated and transaction.sellerhasrated:
+        #transaction is complete, mark book as sold
+        booktomarkassold = transaction.book 
+        booktomarkassold.sold = True
+        booktomarkassold.save()
+
     if doneuser==transaction.buyer:
         addratingform = AddRatingForm()
         if request.method == "POST":
