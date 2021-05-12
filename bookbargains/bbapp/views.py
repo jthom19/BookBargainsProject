@@ -123,7 +123,6 @@ def createlisting(request):
     return render(request, 'sellerListing.html', {'ListBookForm':ListBookForm})
 
 #This function is related to viewing all available books and filtering based on user input.
-@login_required
 def searchbooks(request):
     allbooks = Book.objects.all()
     myFilter = BookFilter(request.GET, queryset=allbooks)
