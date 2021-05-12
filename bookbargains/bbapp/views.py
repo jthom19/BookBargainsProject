@@ -318,14 +318,12 @@ def donewithtransaction(request, doneusername, transactionid):
     doneuser = User.objects.get(username=doneusername)
     
     transaction = Transaction.objects.get(uuid=transactionid)
-    transactionstatus = transaction.get_status_display()
-    transactiontype = type(transactionstatus)
-    # if transaction.get_status_display() == 'In progress':
-    #     transaction.status = 'Completed (pending)'
-    #     transaction.save()
-    # elif transaction.get_status_display() == 'Completed (pending)':
-    #     transaction.status = 'Completed'
-    #     transaction.save()
+    if transaction.get_status_display() == 'In progress':
+        transaction.status = 'Completed (pending)'
+        transaction.save()
+    elif transaction.get_status_display() == 'Completed (pending)':
+        transaction.status = 'Completed'
+        transaction.save()
     
     if doneuser==transaction.buyer:
         usertorate=transaction.seller
@@ -356,4 +354,4 @@ def donewithtransaction(request, doneusername, transactionid):
                 messages.success(request, "Thank you for rating this user!")
                 return redirect('home')
 
-    return render(request, 'addrating.html', {'form':addratingform, 'rateduser':usertorate, 'status':transactiontype})
+    return render(request, 'addrating.html', {'form':addratingform, 'rateduser':usertorate,})
