@@ -29,7 +29,7 @@ class CreateProfileForm(forms.ModelForm):
             'housing': forms.TextInput(attrs={'class':'form-control'}),
             'field':forms.Select(attrs={'class':'form-control'}),
         }
-        labels = {'field': "Most Interesting In:"}
+        labels = {'field': "Most Interested In:"}
 
 class ListBookForm(forms.ModelForm):
     class Meta:
