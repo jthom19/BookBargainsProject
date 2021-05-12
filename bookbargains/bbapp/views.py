@@ -227,7 +227,7 @@ def viewmyprofile(request):
     myprofile = Profile.objects.get(user = request.user)
     myrecommendations = Book.objects.filter(field = myprofile.field)[0:3]
     context = {'mycurrentbooks':mycurrentbooks, 'myprofile':myprofile, 'myrecommendations':myrecommendations}
-    return render(request, 'mybooks.html', context)
+    return render(request, 'myprofile.html', context)
 
 @login_required
 def removelisting(request, bookid):
