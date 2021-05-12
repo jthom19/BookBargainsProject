@@ -16,7 +16,7 @@
         <h5 class="display-5 mt-2" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Transactions as Seller</h5>
         <div class="row">
         {% for transaction in transactionsasseller %}
-            <div class="col-4">
+            <div class="col-4 mb-3">
                 <div class="card rounded">
                     <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
                     <ul class="text-center list-group list-group-flush">
@@ -34,7 +34,7 @@
         <h5 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Transactions as Buyer</h5>
         <div class="row">
         {% for transaction in transactionsasbuyer %}
-            <div class="col-4">
+            <div class="col-4 mb-3">
                 <div class="card rounded">
                     <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
                     <ul class="text-center list-group list-group-flush">
