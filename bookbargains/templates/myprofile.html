@@ -95,11 +95,18 @@
             <li class="list-group-item py-2">Condition: {{Book.get_condition_display}}</li>
             <li class="list-group-item py-2">Price: ${{Book.price}}</li>
           </ul>
-          {% if user.is_authenticated %}
-          <div class="card-footer">
-            <a href="{% url 'removelisting' bookid=Book.uuid %}" class="btn btn-light">Delete Book</a>
-          </div>
+          {% if Book.reported %}
+            <div class="card-footer">
+              <button type="button" class="btn btn-danger" disabled>Reported</button>
+            </div>
+            {% else %}
+              {% if user.is_authenticated %}
+              <div class="card-footer">
+                <a href="{% url 'removelisting' bookid=Book.uuid %}" class="btn btn-light">Delete Book</a>
+              </div>
+              {% endif %}
           {% endif %}
+          
       </div>
       <div><p></p></div>
     </div>

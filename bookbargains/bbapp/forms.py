@@ -34,7 +34,7 @@ class CreateProfileForm(forms.ModelForm):
 class ListBookForm(forms.ModelForm):
     class Meta:
         model = Book
-        exclude = ('user','uuid')
+        exclude = ('user','uuid','reported')
         widgets = {
             'selldonate': forms.Select(attrs={'class':'form-control'}),
             'title': forms.TextInput(attrs={'class':'form-control'}),

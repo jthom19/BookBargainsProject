@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm, AddRatingForm
-from .models import Book, Cart, Wishlist, Transaction, Rating, Profile, Message
+from .models import Book, Cart, Wishlist, Transaction, Rating, Profile, Message, Reported
 from .filters import BookFilter
 # Create your views here.
 
@@ -138,16 +138,6 @@ def changeOrdering(request):
     context = {'books': allbooks, 'filter': myFilter}
     return render(request, 'searchfilter2.html', context)
 
-#This function is called when the user goes to message the user from the cart. It will create a transaction instance.
-@login_required
-def createtransaction(request, bookid):
-    newtransaction = Transaction.objects.create(buyer=request.user, book=Book.objects.get(uuid=bookid), seller=Book.objects.get(uuid=bookid).user)
-    booktoremove = Book.objects.get(uuid=bookid)
-    cart, created = Cart.objects.get_or_create(owner=request.user)
-    cart.cartitem.remove(booktoremove)
-    cart.save()
-    messages.success(request, "Success! You have messaged the owner and have created a transaction. This item will be removed from your cart.")
-    return redirect('viewmytransactions')
 
 ##These functions are related to the cart and wishlist:
     #adding to cart
@@ -234,14 +224,35 @@ def removelisting(request, bookid):
 @login_required
 def reportedbook(request,bookid):
     booktoreport = Book.objects.get(uuid=bookid)
+    userreporting = request.user
+    userreported = booktoreport.user
+    print(userreporting)
+    print(type(userreported))
+    #reporter, reported = Reported.objects.get_or_create()
+    new_report = Reported(reporter = userreporting, reported = userreported)
+    new_report.save()
     booktoreport.reported = True
+    #reporter.save()
     booktoreport.save()
     messages.success(request, "This book has been reported.")
+
     #refresh page, adapt search function to exclude reported books
     #implement flag button on messages page
     #go over urls, not connected correctly
     return redirect('searchfilter')
     
+
+#This function is called when the user goes to message the user from the cart. It will create a transaction instance.
+@login_required
+def createtransaction(request, bookid):
+    newtransaction = Transaction.objects.create(buyer=request.user, book=Book.objects.get(uuid=bookid), seller=Book.objects.get(uuid=bookid).user)
+    booktoremove = Book.objects.get(uuid=bookid)
+    cart, created = Cart.objects.get_or_create(owner=request.user)
+    cart.cartitem.remove(booktoremove)
+    cart.save()
+    messages.success(request, "Success! You have messaged the owner and have created a transaction. This item will be removed from your cart.")
+    return redirect('viewtransactionmessages', selleruser=booktoremove.user, buyeruser=request.user, transactionid=newtransaction.uuid)
+
 @login_required
 def viewmytransactions(request):
     transactionsasseller = Transaction.objects.filter(seller=request.user) #get all transactions where the current user is the seller
@@ -270,6 +281,7 @@ def viewtransactionmessages(request, selleruser, buyeruser, transactionid):
             newmessageform.recipient = notcurrentuser
             newmessageform.transaction = transactiontoview
             newmessageform = newmessageform.save()
+            return redirect('viewtransactionmessages', selleruser=messagesseller, buyeruser=messagesbuyer, transactionid=transactiontoview.uuid)
     context={'transactionmessages':messages, 'transaction':transactiontoview, 'form':newmessageform}
     return render(request, 'transactionmessages.html', context)
 
@@ -283,7 +295,6 @@ def createmessage(request):
             newmessageform = newmessageform.save(commit=False)
             newmessageform.sender = request.user
             newmessageform = newmessageform.save()
-        return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
 
 @login_required
@@ -291,15 +302,14 @@ def donewithtransaction(request, doneusername, transactionid):
     doneuser = User.objects.get(username=doneusername)
     
     transaction = Transaction.objects.get(uuid=transactionid)
-    if transaction.get_status_display() == 'In progress':
-        transaction.status = 'Completed (pending)'
-        transaction.save()
-    elif transaction.get_status_display() == 'Completed (pending)':
-        transaction.status = 'Completed'
-        transaction.save()
-    
     if doneuser==transaction.buyer:
-        usertorate=transaction.seller
+        transaction.buyerhasrated = True
+        transaction.save()
+    else:
+        transaction.sellerhasrated = True
+        transaction.save()
+
+    if doneuser==transaction.buyer:
         addratingform = AddRatingForm()
         if request.method == "POST":
             addratingform = AddRatingForm(request.POST)
@@ -311,9 +321,8 @@ def donewithtransaction(request, doneusername, transactionid):
                 Rating.objects.filter(user=usertoupdate).update(sellerrating=((currentnumberofsellerratings*currentusersellerrating)+(addedrating))/(currentnumberofsellerratings+1)) #(9*(5.0)+1*(3.0))/10
                 Rating.objects.filter(user=usertoupdate).update(numberofsellerratings=currentnumberofsellerratings+1)
                 messages.success(request, "Thank you for rating this user!")
-                return redirect('home')
+                return redirect('viewmytransactions')
     else:
-        usertorate=transaction.buyer
         addratingform = AddRatingForm()
         if request.method == "POST":
             addratingform = AddRatingForm(request.POST)
@@ -325,6 +334,6 @@ def donewithtransaction(request, doneusername, transactionid):
                 Rating.objects.filter(user=usertoupdate).update(buyerrating=((currentnumberofbuyerratings*currentuserbuyerrating)+(addedrating))/(currentnumberofbuyerratings+1)) #(9*(5.0)+1*(3.0))/10
                 Rating.objects.filter(user=usertoupdate).update(numberofbuyerratings=currentnumberofbuyerratings+1)
                 messages.success(request, "Thank you for rating this user!")
-                return redirect('home')
+                return redirect('viewmytransactions')
 
-    return render(request, 'addrating.html', {'form':addratingform, 'rateduser':usertorate,})
+    return render(request, 'addrating.html', {'form':addratingform})
