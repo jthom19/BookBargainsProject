@@ -6,33 +6,47 @@
     <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">YOUR TRANSACTIONS</h3>
 </div>
 
+{% if not transactionsasseller %}
+    {% if not transactionsasbuyer %}
+        <div class="container text-center"><h5 class="mt-3" style="color: #8a100b; font-family: 'Oswald', sans-serif;">It appears as though you have no active transactions.</h5><h6 style="color: #8a100b; font-family: 'Oswald', sans-serif;">To have an active transaction, you must either message another user after having added their book to your cart OR <br>have had another user message you regarding a book you are selling.</h6></div>
+    {% endif %}
+{% endif %}
 <div class="container mt-3 pb-4">
-    <h5 class="display-5 mt-2" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Transactions as Seller</h5>
-    {% for transaction in transactionsasseller %}
-        <div class="col-4">
-            <div class="card rounded">
-                <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
-                <ul class="text-center list-group list-group-flush">
-                    <li class="list-group-item">Book: {{transaction.book.title}}</li>
-                    <li class="list-group-item">Status: {{transaction.status}}</li>
-                    <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Message {{transaction.buyer}}</a></li>
-                </ul>
+    {% if transactionsasseller %}
+        <h5 class="display-5 mt-2" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Transactions as Seller</h5>
+        <div class="row">
+        {% for transaction in transactionsasseller %}
+            <div class="col-4">
+                <div class="card rounded">
+                    <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
+                    <ul class="text-center list-group list-group-flush">
+                        <li class="list-group-item">Book: {{transaction.book.title}}</li>
+                        <li class="list-group-item">Book Owner: {{transaction.book.user.username}}</li>
+                        <li class="list-group-item">Status: {{transaction.status}}</li>
+                        <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Message {{transaction.buyer}}</a></li>
+                    </ul>
+                </div>
             </div>
+        {% endfor %}
         </div>
-    {% endfor %}
-    <h5 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Transactions as Buyer</h5>
-    {% for transaction in transactionsasbuyer %}
-        <div class="col-4">
-            <div class="card rounded">
-                <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
-                <ul class="text-center list-group list-group-flush">
-                    <li class="list-group-item">Book: {{transaction.book.title}}</li>
-                    <li class="list-group-item">Status: {{transaction.status}}</li>
-                    <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Message {{transaction.seller}}</a></li>
-                </ul>
+    {% endif %}
+    {% if transactionsasbuyer %}
+        <h5 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Transactions as Buyer</h5>
+        <div class="row">
+        {% for transaction in transactionsasbuyer %}
+            <div class="col-4">
+                <div class="card rounded">
+                    <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
+                    <ul class="text-center list-group list-group-flush">
+                        <li class="list-group-item">Book: {{transaction.book.title}}</li>
+                        <li class="list-group-item">Status: {{transaction.status}}</li>
+                        <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Message {{transaction.seller}}</a></li>
+                    </ul>
+                </div>
             </div>
+        {% endfor %}
         </div>
-    {% endfor %}
+    {% endif %}
 </div>
 
 {% endblock %}

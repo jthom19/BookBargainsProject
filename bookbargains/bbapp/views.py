@@ -142,8 +142,12 @@ def changeOrdering(request):
 @login_required
 def createtransaction(request, bookid):
     newtransaction = Transaction.objects.create(buyer=request.user, book=Book.objects.get(uuid=bookid), seller=Book.objects.get(uuid=bookid).user)
-    return redirect('home')
-
+    booktoremove = Book.objects.get(uuid=bookid)
+    cart, created = Cart.objects.get_or_create(owner=request.user)
+    cart.cartitem.remove(booktoremove)
+    cart.save()
+    messages.success(request, "Success! You have messaged the owner and have created a transaction. This item will be removed from your cart.")
+    return redirect('viewmytransactions')
 
 ##These functions are related to the cart and wishlist:
     #adding to cart
@@ -269,7 +273,7 @@ def reportedbook(request,bookid):
 def viewmytransactions(request):
     transactionsasseller = Transaction.objects.filter(seller=request.user) #get all transactions where the current user is the seller
     transactionsasbuyer = Transaction.objects.filter(buyer=request.user) #get all transactions where the current user is the buyer
-    context = {'transactionsasseller':transactionsasseller, 'transactionsasbuyer':transactionsasbuyer, 'displayedmessages':messages}
+    context = {'transactionsasseller':transactionsasseller, 'transactionsasbuyer':transactionsasbuyer}
     return render(request, 'mytransactions.html', context)
 
 @login_required
