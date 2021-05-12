@@ -225,7 +225,8 @@ def removefromwishlist(request, bookid):
 def viewmybooks(request):
     mycurrentbooks = Book.objects.filter(user = request.user)
     myprofile = Profile.objects.get(user = request.user)
-    context = {'mycurrentbooks':mycurrentbooks, 'myprofile':myprofile}
+    myrecommendations = Book.objects.filter(field = myprofile.field)[0:3]
+    context = {'mycurrentbooks':mycurrentbooks, 'myprofile':myprofile, 'myrecommendations':myrecommendations}
     return render(request, 'mybooks.html', context)
 
 @login_required
