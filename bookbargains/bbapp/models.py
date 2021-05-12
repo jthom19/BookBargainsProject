@@ -90,16 +90,26 @@ class Book(models.Model):
         ordering = ["price"]
 
 
-TRANSACTION_CHOICES = (('In progress', 'In progress'), ('Completed (pending)', 'Completed (pending)'), ('Completed','Completed'))
+TRANSACTION_CHOICES = (('Created', 'Created'), ('Pending', 'Pending'), ('Completed','Completed'))
 
 class Transaction(models.Model):
     uuid = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
     buyer = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL,related_name='buyer')
     seller = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, related_name='seller')
     book = models.ForeignKey(Book,default = 1,null = True, on_delete = models.SET_NULL, related_name='book')
-    status = models.CharField(max_length=40, choices=TRANSACTION_CHOICES, default='In progress', null=True)
+    buyerhasrated = models.BooleanField(default=False)
+    sellerhasrated = models.BooleanField(default=False)
+    status = models.CharField(max_length=40, default='Created', null=True)
     def __str__(self):
         return "Buyer: "+str(self.buyer)+"____________"+"Seller: "+str(self.seller)
+    def save(self, *args, **kwargs):
+        if self.buyerhasrated==False and self.sellerhasrated==False:
+            self.status='Created'
+        elif self.buyerhasrated or self.sellerhasrated:
+            self.status='Pending'
+            if self.buyerhasrated and self.sellerhasrated:
+                self.status='Completed'
+        super(Transaction, self).save(*args, **kwargs)
 
 class Message(models.Model):
     text = models.TextField()

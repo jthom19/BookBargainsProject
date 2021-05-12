@@ -20,10 +20,10 @@
                 <div class="card rounded">
                     <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
                     <ul class="text-center list-group list-group-flush">
-                        <li class="list-group-item">Book: {{transaction.book.title}}</li>
+                        <li class="list-group-item">Book Title: {{transaction.book.title}}</li>
                         <li class="list-group-item">Book Owner: {{transaction.book.user.username}}</li>
-                        <li class="list-group-item">Status: {{transaction.status}}</li>
-                        <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Message {{transaction.buyer}}</a></li>
+                        <li class="list-group-item" style="text-transform:upper;">Status: {{transaction.status|upper}}</li>
+                        <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Open Chat with {{transaction.buyer}}</a></li>
                     </ul>
                 </div>
             </div>
@@ -38,9 +38,9 @@
                 <div class="card rounded">
                     <img class="card-img-top" src="{{transaction.book.image.url}}" alt="">
                     <ul class="text-center list-group list-group-flush">
-                        <li class="list-group-item">Book: {{transaction.book.title}}</li>
-                        <li class="list-group-item">Status: {{transaction.status}}</li>
-                        <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Message {{transaction.seller}}</a></li>
+                        <li class="list-group-item">Book Title: {{transaction.book.title}}</li>
+                        <li class="list-group-item" style="text-transform:upper;">Status: {{transaction.status|upper}}</li>
+                        <li class="list-group-item"><a class="btn btn-outline-dark" href="{% url 'viewtransactionmessages' selleruser=transaction.seller buyeruser=transaction.buyer transactionid=transaction.uuid%}">Open chat with {{transaction.seller}}</a></li>
                     </ul>
                 </div>
             </div>
