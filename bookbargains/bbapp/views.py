@@ -227,19 +227,11 @@ def reportedbook(request,bookid):
     booktoreport = Book.objects.get(uuid=bookid)
     userreporting = request.user
     userreported = booktoreport.user
-    print(userreporting)
-    print(type(userreported))
-    #reporter, reported = Reported.objects.get_or_create()
     new_report = Reported(reporter = userreporting, reported = userreported)
     new_report.save()
     booktoreport.reported = True
-    #reporter.save()
     booktoreport.save()
     messages.success(request, "This book has been reported.")
-
-    #refresh page, adapt search function to exclude reported books
-    #implement flag button on messages page
-    #go over urls, not connected correctly
     return redirect('searchfilter')
 
 def reporteduser(request,transactionid):
@@ -256,10 +248,6 @@ def reporteduser(request,transactionid):
     reportattransaction.status = 'Completed'
     reportattransaction.save()
     messages.success(request, "This user has been reported.")
-
-    #refresh page, adapt search function to exclude reported books
-    #implement flag button on messages page
-    #go over urls, not connected correctly
     return redirect('viewmytransactions')
 
 
