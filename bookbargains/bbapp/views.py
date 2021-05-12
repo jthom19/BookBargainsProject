@@ -209,8 +209,9 @@ def removefromwishlist(request, bookid):
 def viewmyprofile(request):
     mycurrentbooks = Book.objects.filter(user = request.user)
     myprofile = Profile.objects.get(user = request.user)
+    myratings = Rating.objects.get(user = request.user)
     myrecommendations = Book.objects.filter(field = myprofile.field)[0:3]
-    context = {'mycurrentbooks':mycurrentbooks, 'myprofile':myprofile, 'myrecommendations':myrecommendations}
+    context = {'mycurrentbooks':mycurrentbooks, 'myprofile':myprofile, 'myrecommendations':myrecommendations, 'myratings':myratings}
     return render(request, 'myprofile.html', context)
 
 @login_required
@@ -265,7 +266,7 @@ def viewtransactionmessages(request, selleruser, buyeruser, transactionid):
     transactiontoview = Transaction.objects.get(uuid=transactionid)
     messagesseller = User.objects.get(username=selleruser)
     messagesbuyer = User.objects.get(username=buyeruser)
-    messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer))
+    messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer)).order_by('creation_time')
 
     if messagesseller == request.user:
         notcurrentuser = messagesbuyer

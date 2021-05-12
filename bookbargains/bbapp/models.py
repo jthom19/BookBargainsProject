@@ -5,6 +5,7 @@ from django.db.models import Sum
 from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
 import uuid
+from datetime import datetime
 
 FIELD_CHOICES = (
     ('SO', 'Select One'),
@@ -116,6 +117,7 @@ class Message(models.Model):
     sender = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='sender')
     recipient = models.ForeignKey(User, null=True, on_delete=models.CASCADE, related_name='recipient')
     transaction = models.ForeignKey(Transaction, null=True, on_delete=models.CASCADE, related_name='transaction')
+    creation_time = models.DateTimeField(default=datetime.now, blank=True)
     def __str__(self):
         return 'Message: '+str(self.text)
 
