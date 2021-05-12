@@ -222,7 +222,7 @@ def removefromwishlist(request, bookid):
 
 #These two functions have to deal with the user viewing their own book listings and removing if necessary.
 @login_required
-def viewmybooks(request):
+def viewmyprofile(request):
     mycurrentbooks = Book.objects.filter(user = request.user)
     myprofile = Profile.objects.get(user = request.user)
     myrecommendations = Book.objects.filter(field = myprofile.field)[0:3]

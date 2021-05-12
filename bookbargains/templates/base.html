@@ -85,7 +85,7 @@
                   {% if user.is_authenticated %}
                     <a class="dropdown-item" href="{% url 'logout'%}?next={{request.path}}">Sign Out</a>
                     <a class="dropdown-item" href="{% url 'wishlist' %}">Wishlist</a>
-                    <a class="dropdown-item" href="{% url 'mybooks' %}">My Books</a>
+                    <a class="dropdown-item" href="{% url 'myprofile' %}">My Profile</a>
                     <a class="dropdown-item" href="{% url 'messages'%}">Messages</a>
                   {% else %}
                     <a class="dropdown-item" href="{% url 'login' %}">Log In</a>
