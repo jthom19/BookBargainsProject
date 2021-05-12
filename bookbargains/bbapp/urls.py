@@ -25,6 +25,7 @@ urlpatterns = [
     path('viewmytransactions/', views.viewmytransactions, name='viewmytransactions'),
     path('viewtransactionmessages/(?P<selleruser>\s+)(?P<buyeruser>\s+)(?P<transactionid>\s+)', views.viewtransactionmessages, name='viewtransactionmessages'),
     path('donewithtransaction/(?P<doneusername>\s+)(?P<transactionid>\s+)', views.donewithtransaction, name='donewithtransaction'),
+    path('reportuser/(?P<transactionid>\s+)', views.reporteduser, name='reportuser'),
     
     path('cart/', views.viewcart, name='cart'),
     path('addtocart/(?P<bookid>\s+)', views.addtocart, name='addtocart'),
