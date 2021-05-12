@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block body_block %}
+
+<div class="jumbotron text-center pt-3 pb-0 mt-0 mb-0" style="background-color: transparent; border-radius:0px">
+    <h3 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">YOUR TRANSACTIONS</h3>
+</div>
+
+<div class="container mt-5">
+    <h5 class="display-5 mt-4" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 2em;">Messages</h5>
+    {% for m in transactionmessages %}
+        {% if m.sender == request.user %}
+            <p class="text-right">{{m.text}}</p>
+        {% else %}
+            <p class="text-left">{{m.text}}</p>
+        {% endif %}
+    {% endfor %}
+</div>
+
+{% endblock %}
+

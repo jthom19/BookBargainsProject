@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm, AddRatingForm
-from .models import Book, Cart, Wishlist, Transaction, Rating, Profile
+from .models import Book, Cart, Wishlist, Transaction, Rating, Profile, Message
 from .filters import BookFilter
 # Create your views here.
 
@@ -137,6 +137,8 @@ def createmessage(request):
     if request.method == "POST":
         newmessageform = MessageForm(request.POST)
         if newmessageform.is_valid():
+            newmessageform = newmessageform.save(commit=False)
+            newmessageform.sender = request.user
             newmessageform = newmessageform.save()
         return redirect('../')
     return render(request, 'messages.html', {'MessageForm':MessageForm})
@@ -275,3 +277,17 @@ def reportedbook(request,bookid):
     #go over urls, not connected correctly
     return redirect('searchfilter')
     
+@login_required
+def viewmytransactions(request):
+    transactionsasseller = Transaction.objects.filter(seller=request.user) #get all transactions where the current user is the seller
+    transactionsasbuyer = Transaction.objects.filter(buyer=request.user) #get all transactions where the current user is the buyer
+    context = {'transactionsasseller':transactionsasseller, 'transactionsasbuyer':transactionsasbuyer, 'displayedmessages':messages}
+    return render(request, 'mytransactions.html', context)
+
+@login_required
+def viewtransactionmessages(request, selleruser, buyeruser):
+    messagesseller = User.objects.get(username=selleruser)
+    messagesbuyer = User.objects.get(username=buyeruser)
+    messages = Message.objects.filter(transaction__in=Transaction.objects.filter(seller=messagesseller).filter(buyer=messagesbuyer))
+    context={'transactionmessages':messages}
+    return render(request, 'transactionmessages.html', context)

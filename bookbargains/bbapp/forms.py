@@ -52,7 +52,7 @@ class ListBookForm(forms.ModelForm):
 class MessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = ('recipient','sender','subject','message','unread')
+        fields = '__all__'
 
 class AddRatingForm(forms.Form):
     addedrating = forms.FloatField()
