@@ -42,11 +42,15 @@
         </div>
         <div class="col-8">
             {% if transactionmessages %}
-            <div class="container text-right">
-                <p class="p-1">
-                    <span><a href="{% url 'donewithtransaction' doneusername=request.user.username transactionid=transaction.uuid %}" class="btn btn-dark">Transaction is DONE!</a></span>
-                </p>
-            </div>
+                {% if transaction.get_status_display == 'Completed' %}<p></p>
+                {% else %}
+                    <div class="container text-right">
+                        <p class="p-1">
+                            <span><a href="{% url 'donewithtransaction' doneusername=request.user.username transactionid=transaction.uuid %}" class="btn btn-dark">Transaction is DONE!</a></span>
+                        </p>
+                    </div>
+                {% endif %}
+
                 {% for m in transactionmessages %}
                     {% if m.sender == request.user %}
                         <div class="d-flex flex-row justify-content-end p-3 my-1 mx-3 rounded" style="position: relative; background-color: #ebcea5;">
@@ -66,21 +70,24 @@
                 <p class="text-center" style="color: #8a100b; font-family: 'Oswald', sans-serif; font-size: 1.5em;">No messages have been exchanged yet.</p>
             {% endif %}
 
-            <form class="mt-3" method="post" class="w-50 m-auto">
-                {% csrf_token %}
-                {% for field in form %}
-                    <p class="w-75 m-auto" id="{{ field.name }}">
-                    {{field}}
-                    {% if field.help_text %}
-                        <small style="color: grey">{{ field.help_text }}</small>
-                    {% endif %}
-                    {% for error in field.errors %}
-                        <p style="color: red">{{ error }}</p>
+            {% if transaction.get_status_display == 'Completed' %}<p class="text-center mt-2" style="color:#8a100b; font-family: 'Oswald', sans-serif; font-size: 1.5em;">The transaction is complete.</p>
+            {% else %}
+                <form class="mt-3" method="post" class="w-50 m-auto">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <p class="w-75 m-auto" id="{{ field.name }}">
+                        {{field}}
+                        {% if field.help_text %}
+                            <small style="color: grey">{{ field.help_text }}</small>
+                        {% endif %}
+                        {% for error in field.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                        </p>
                     {% endfor %}
-                    </p>
-                {% endfor %}
-                <div class="text-center mt-4"><button class="text-center btn btn-dark" type="submit">Send Message</button></div>
+                    <div class="text-center mt-4"><button class="text-center btn btn-dark" type="submit">Send Message</button></div>
                 </form>
+            {% endif %}
         </div>
     </div>
 </div>

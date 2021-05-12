@@ -291,12 +291,11 @@ def donewithtransaction(request, doneusername, transactionid):
     doneuser = User.objects.get(username=doneusername)
     
     transaction = Transaction.objects.get(uuid=transactionid)
-    if transaction.get_status_display() == 'In progress':
-        transaction.status = 'Completed (pending)'
+    if transaction.status == 'Created':
+        transaction.status = 'Pending'
         transaction.save()
-    elif transaction.get_status_display() == 'Completed (pending)':
-        transaction.status = 'Completed'
-        transaction.save()
+    # IF TRUE OR FALSE
+
     
     if doneuser==transaction.buyer:
         usertorate=transaction.seller
