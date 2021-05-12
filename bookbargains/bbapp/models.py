@@ -129,3 +129,12 @@ class Wishlist(models.Model):
         return self.item.aggregate(Sum('price'))['price__sum'] or 0
     def __str__(self):
         return 'This is the wishlist for: '+str(self.owner.username)
+
+class Reported(models.Model):
+    #report_id = models.AutoField(auto_created = True, primary_key = True, null = False)
+    #reporter = models.ForeignKey(User, on_delete = models.CASCADE,related_name='reporter')
+    #reported = models.ForeignKey(User, on_delete = models.CASCADE, related_name='reported')
+    #uuid = models.CharField(max_length=100, blank=True, unique=True, default=uuid.uuid4)
+    reporter = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL,related_name='reporter')
+    reported = models.ForeignKey(User,default = 1,null = True, on_delete = models.SET_NULL, related_name='reported')
+    resolved = models.BooleanField(default = False)

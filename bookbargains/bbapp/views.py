@@ -12,7 +12,7 @@ from django.dispatch import receiver
 from django.shortcuts import render, redirect
 from django.views.generic import TemplateView, ListView
 from .forms import CreateUserForm, CreateProfileForm, ListBookForm, MessageForm, AddRatingForm
-from .models import Book, Cart, Wishlist, Transaction, Rating, Profile
+from .models import Book, Cart, Wishlist, Transaction, Rating, Profile, Reported
 from .filters import BookFilter
 # Create your views here.
 
@@ -267,9 +267,18 @@ def newbuyerrating(request,inputusername):
 @login_required
 def reportedbook(request,bookid):
     booktoreport = Book.objects.get(uuid=bookid)
+    userreporting = request.user
+    userreported = booktoreport.user
+    print(userreporting)
+    print(type(userreported))
+    #reporter, reported = Reported.objects.get_or_create()
+    new_report = Reported(reporter = userreporting, reported = userreported)
+    new_report.save()
     booktoreport.reported = True
+    #reporter.save()
     booktoreport.save()
     messages.success(request, "This book has been reported.")
+
     #refresh page, adapt search function to exclude reported books
     #implement flag button on messages page
     #go over urls, not connected correctly
