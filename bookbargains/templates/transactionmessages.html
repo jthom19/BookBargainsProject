@@ -54,12 +54,16 @@
                             </div>
                         {% endif %}
                     {% endif %}
-                    <div class="col text-right pr-0">
-                        <p class="p-1">
-                            <span><a href="{% url 'donewithtransaction' doneusername=request.user.username transactionid=transaction.uuid %}" class="btn btn-outline-danger">Report User <i class="fa fa-flag" ></i></a></span>
-                        </p>
-                    </div>
-                    </div>
+
+                    {% if transaction.status == 'Completed' %}
+                    {% else %}
+                        <div class="col text-right pr-0">
+                            <p class="p-1">
+                                <span><a href="{% url 'reportuser' transactionid=transaction.uuid %}" class="btn btn-outline-danger">Report User <i class="fa fa-flag" ></i></a></span>
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
                 {% for m in transactionmessages %}
                     {% if m.sender == request.user %}
                         <div class="d-flex flex-row justify-content-end p-3 my-1 mx-3 rounded" style="position: relative; background-color: #ebcea5;">

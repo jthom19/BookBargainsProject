@@ -242,6 +242,26 @@ def reportedbook(request,bookid):
     #go over urls, not connected correctly
     return redirect('searchfilter')
 
+def reporteduser(request,transactionid):
+    reportattransaction = Transaction.objects.get(uuid=transactionid)
+    booktoreport = Book.objects.get(uuid=reportattransaction.book.uuid)
+    userreporting = request.user
+    userreported = booktoreport.user
+    new_report = Reported(reporter = userreporting, reported = userreported)
+    new_report.save()
+    booktoreport.reported = True
+    booktoreport.save()
+    reportattransaction.buyerhasrated = True
+    reportattransaction.sellerhasrated = True
+    reportattransaction.status = 'Completed'
+    reportattransaction.save()
+    messages.success(request, "This user has been reported.")
+
+    #refresh page, adapt search function to exclude reported books
+    #implement flag button on messages page
+    #go over urls, not connected correctly
+    return redirect('viewmytransactions')
+
 
 #This function is called when the user goes to message the user from the cart. It will create a transaction instance.
 @login_required
