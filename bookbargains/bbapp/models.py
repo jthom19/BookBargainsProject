@@ -6,29 +6,6 @@ from django.dispatch import receiver
 from django.core.exceptions import ObjectDoesNotExist
 import uuid
 
-
-class Profile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE) #User deleted? Delete profile
-    first_name = models.CharField(max_length=100, null=True)
-    last_name = models.CharField(max_length = 100, null=True)
-    phone = models.CharField(max_length = 10, null=True)
-    major = models.CharField(max_length = 100, null=True)
-    housing = models.CharField(max_length = 100, null=True)
-    def __str__(self):
-        return self.user.username
-
-class Rating(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
-    buyerrating = models.FloatField(default=5.00)
-    numberofbuyerratings = models.FloatField(default=1.00)
-    sellerrating = models.FloatField(default=5.00)
-    numberofsellerratings = models.FloatField(default=1.00)
-    def __str__(self):
-        return str(self.user.username)+' has a buyer rating of '+str(self.buyerrating)+' and a seller rating of '+str(self.sellerrating)
-
-BOOK_CONDITION_CHOICES = (('SO', 'Select One'), ('NE', 'New'), ('GR', 'Great'),
-                          ('GO', 'Good'), ('AV', 'Average'), ('PO', 'Poor'))
-
 FIELD_CHOICES = (
     ('SO', 'Select One'),
     ('ART', 'Arts'),
@@ -53,7 +30,33 @@ FIELD_CHOICES = (
     ('FIN', 'Finance'),
     ('ACT', 'Accounting'), 
     ('OTH', 'Other'),
-    )
+)
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE) #User deleted? Delete profile
+    first_name = models.CharField(max_length=100, null=True)
+    last_name = models.CharField(max_length = 100, null=True)
+    phone = models.CharField(max_length = 10, null=True)
+    major = models.CharField(max_length = 100, null=True)
+    housing = models.CharField(max_length = 100, null=True)
+    field = models.CharField(
+        max_length=4, choices=FIELD_CHOICES, default='Select One',
+        null=True)  #dropdown
+    def __str__(self):
+        return self.user.username
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    buyerrating = models.FloatField(default=5.00)
+    numberofbuyerratings = models.FloatField(default=1.00)
+    sellerrating = models.FloatField(default=5.00)
+    numberofsellerratings = models.FloatField(default=1.00)
+    def __str__(self):
+        return str(self.user.username)+' has a buyer rating of '+str(self.buyerrating)+' and a seller rating of '+str(self.sellerrating)
+
+BOOK_CONDITION_CHOICES = (('SO', 'Select One'), ('NE', 'New'), ('GR', 'Great'),
+                          ('GO', 'Good'), ('AV', 'Average'), ('PO', 'Poor'))
+
 
 SELL_DONATE_CHOICES = (('SO', 'Select One'), ('SE', 'Selling'), ('DO','Donating'))
 

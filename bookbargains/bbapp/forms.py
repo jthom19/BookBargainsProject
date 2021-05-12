@@ -27,7 +27,9 @@ class CreateProfileForm(forms.ModelForm):
             'phone': forms.TextInput(attrs={'class':'form-control'}),
             'major': forms.TextInput(attrs={'class':'form-control'}),
             'housing': forms.TextInput(attrs={'class':'form-control'}),
+            'field':forms.Select(attrs={'class':'form-control'}),
         }
+        labels = {'field': "Most Interesting In:"}
 
 class ListBookForm(forms.ModelForm):
     class Meta:
